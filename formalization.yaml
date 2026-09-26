@@ -1,0 +1,185 @@
+# SPDX-License-Identifier: Apache-2.0
+# Authors: Formal Frontier Agents
+# Metadata prepared by Prism (AI agent); mathematical contributors named below.
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/99c678e569c7c4c0772db297c5ddd5e4c9b6322e/schema/v0.4.schema.json
+version: "v0.4"
+
+project:
+  name: "dedekind-ideal-arithmetic"
+  description: >-
+    Six reusable results on ideal absolute norms, principal primes obtained
+    from element norms, and ideal class groups of Dedekind-domain localizations.
+    The localization results give surjectivity of class extension and conditional
+    PID and UFD criteria when a generating class becomes trivial.
+  authors:
+    - "Formal Frontier Agents"
+    - "Prism (AI agent; ideal-norm and principal-prime proofs)"
+    - "Atlas (AI agent; localization and class-group proofs)"
+  responsible_maintainers:
+    - "Prism (overall integration and ideal arithmetic)"
+    - "Atlas (localization and class-group unit)"
+  license: "Apache-2.0"
+
+sources:
+  - title: "The K-book: An Introduction to Algebraic K-theory"
+    authors:
+      - "Charles A. Weibel"
+    id: "https://sites.math.rutgers.edu/~weibel/Kbook/Kbook.pdf"
+    type: "book"
+    location: "Complete-book build dated 2013-08-29, Chapter I, section 3"
+    relationship: "background"
+    author_endorsement: "not-contacted"
+    note: >-
+      The cyclotomic examples motivated the project's earlier ideal-arithmetic
+      research. This library extracts generic prerequisites; it does not compute
+      the examples' class numbers or claim full formalization of the book.
+      No source PDF, scan or quoted passage is included. No explicit license or
+      broader redistribution grant for the book was established; access to the
+      mathematical source is not a grant to reproduce its expression.
+  - title: "Ideal class groups under localization of Dedekind domains"
+    type: "folklore"
+    relationship: "independently-proves"
+    author_endorsement: "n/a"
+    note: >-
+      Standard mathematics, not a claim of a newly discovered theorem. Atlas's
+      project proof chooses a target ideal representative, contracts and extends
+      it, and transports ideal classes using mathlib. Surjectivity then turns a
+      killed source generator into trivial target classes, giving the PID and
+      UFD consequences. No particular textbook's proof expression is asserted
+      as the origin of this contribution.
+
+related_formalizations:
+  - id: "https://github.com/leanprover-community/mathlib4/tree/83abb3e776bdefcbc447a1e44d0debe4010039e5"
+    relationship: "builds-on"
+    note: >-
+      Native ideal norms and subgroup indices, class-group representatives and
+      extendedHom, localization map_under, and PID/UFD instances are reused.
+      Mathlib contributors retain their authorship and Apache-2.0 notices in
+      the dependency. This repository does not replace those definitions or
+      vendor mathlib sources. Lake's resolved manifest also retains generated
+      dependency metadata derived from mathlib's manifest.
+  - id: "FormalFrontier/source-weibel-k-book@8b0d0347624478ed09a16007ab53ed27cabc40c0"
+    relationship: "adapts"
+    note: >-
+      Prism's earlier original project contribution in
+      WeibelKBook/Experiments/ChapterI3CyclotomicThirteenBoundaryDiagnostic.lean,
+      specifically the finite-index comparison argument and private
+      exists_principal_prime_of_norm proof, is an expression antecedent of the
+      norm-order and principal-prime modules here. The extraction generalizes
+      the ambient ring and the signed norm hypothesis; it is not wholly new
+      proof expression or merely a bibliographic influence. The other
+      cyclotomic computations and source material are not included.
+  - id: "FormalFrontier/source-weibel-k-book@16d8877c99c829de930d5a1c941fcc328e06aeb3"
+    relationship: "adapts"
+    note: >-
+      The corresponding finite-index and exists_principal_prime_of_norm
+      arguments in Prism's earlier
+      WeibelKBook/Experiments/ChapterI3CyclotomicSeventeenBoundaryDiagnostic.lean
+      are also recorded predecessors. Original project contributions, including
+      this internal reuse, are covered by the operator-selected Apache-2.0
+      project licensing decision; this is not a copyright-ownership assertion
+      or an independent clearance verdict.
+
+status:
+  scope: >-
+    The six declarations below describe the existing development mathematics.
+    They do not provide element-norm witnesses, class-number computations,
+    injectivity of class extension or a proof that a proposed class generates
+    a class group. At the 2026-09-25 21:56 UTC author checkpoint, full release
+    verification and independent acceptance of the metadata and final assembly
+    remain outstanding. Detailed source
+    correspondence and coverage decisions remain in source repositories.
+  main_results:
+    - declaration: "Ideal.absNorm_lt_absNorm_of_lt"
+      file: "DedekindIdealArithmetic/Ideal/AbsNorm.lean"
+      note: >-
+        In an infinite commutative Dedekind domain with finite quotients,
+        strict inclusion with nonzero smaller ideal strictly reverses absolute
+        norms. The nonzero hypothesis is not omitted.
+    - declaration: "Ideal.eq_of_le_of_absNorm_eq"
+      file: "DedekindIdealArithmetic/Ideal/AbsNorm.lean"
+      note: >-
+        Under the same ambient hypotheses, nested ideals with equal absolute
+        norm are equal, including the zero-ideal case.
+    - declaration: "Ideal.exists_principal_prime_over_of_norm_natAbs_eq"
+      file: "DedekindIdealArithmetic/Ideal/PrincipalPrime.lean"
+      note: >-
+        In an infinite commutative Dedekind domain finite free over the integers,
+        a supplied element with prime absolute algebraic norm yields a
+        principal prime above that rational prime. The element and norm
+        equality are hypotheses, not outputs.
+    - declaration: "ClassGroup.extendedHom_surjective_of_isLocalization"
+      file: "DedekindIdealArithmetic/ClassGroup/Localization.lean"
+      note: >-
+        For Dedekind domains A and B with B an A-algebra torsion-free as an
+        A-module and an actual localization at M, class extension is onto.
+        No injectivity or finiteness of either class group is asserted.
+    - declaration: "ClassGroup.isPrincipalIdealRing_of_generator_of_isLocalization"
+      file: "DedekindIdealArithmetic/ClassGroup/Localization.lean"
+      note: >-
+        With the same localization hypotheses, if every source class is an
+        integral power of a supplied class g and g extends to one, then B
+        is a principal ideal ring. Both generation and killing are inputs.
+    - declaration: "ClassGroup.uniqueFactorizationMonoid_of_generator_of_isLocalization"
+      file: "DedekindIdealArithmetic/ClassGroup/Localization.lean"
+      note: >-
+        The same exact hypotheses imply unique factorization in B through
+        the proved principal-ideal-ring criterion.
+
+automation:
+  methods:
+    - method: "agent"
+      framework: "Hive-managed AI agents using Lean and Lake"
+      tool_setup: >-
+        Prism and Atlas composed Lean proofs using native mathlib APIs,
+        compiler feedback and ordinary tactics such as rw, simp, constructor,
+        congr, by_cases and typeclass inference. Separate agent executions
+        reviewed the mathematical development contributions. Toolchain and
+        dependency revisions are recorded by the repository's Lean/Lake files.
+      prompting_notes: >-
+        Bounded project assignments required reusable statements, explicit
+        hypotheses, native API reuse, provenance and independent mathematical
+        review. No claim is made of a human-authored proof or human review.
+  notes: >-
+    AI agents authored code, proof text, documentation and this metadata.
+    Historical model identities, total time and expenditure are not reported
+    because no complete measurements have been established for this artifact.
+    AI involvement does not itself establish origin, correctness or rights.
+
+fidelity:
+  divergences: >-
+    The ideal-norm extraction removes the earlier cyclotomic specialization:
+    norm comparison needs only an infinite Dedekind domain with finite
+    quotients, while principal-prime extraction uses finite freeness over the
+    integers and a prime absolute norm, not a positive signed norm.
+    The localization criterion is generic and conditional on the supplied
+    generator and killing proofs. These prerequisites are not a formalization
+    of a concrete cyclotomic or geometric example. No new K-theory,
+    class-group or ideal encoding is introduced.
+
+review:
+  status: "unchecked"
+  notes: >-
+    At the 2026-09-25 21:56 UTC author checkpoint this metadata and the complete
+    release assembly have not received fresh independent review. This is a dated
+    author snapshot, not a live status feed. Earlier development mathematics was agent-reviewed:
+    norm-order contribution fb790bfcc327b4f1fccd95aea58b3b7f97a7aca2
+    (PR2/review1084, worker-a Task hive-request-a5b129874f865aee03e0de56cde5c57cfbede65c,
+    UID f0bfce1f-b511-4843-84ad-d809c3ebb30e);
+    principal-prime contribution ed5aa2d1b6d862a4527b64f1eebfb5f7810bcdf5
+    (PR4/review1088, worker-b Task hive-request-e1b3abe094861db427e2a42671c09fd559e8d233,
+    UID 9b7f582d-a0de-4fb1-b30f-b28d574aaa2d);
+    localization contribution 475641ba3f934cf23ffc479dd03827debd5b17b5
+    (PR6/review2256, Prism reviewing Atlas's contribution).
+    These are limited historical mathematical reviews, not review of this
+    metadata, full release rights clearance, complete stored-proof rechecking,
+    release acceptance or a source-coverage decision. No first official release
+    is claimed. A schema-valid metadata file does not certify its assertions.
+
+acknowledgements: >-
+  The mathlib community supplies the underlying formal theories; Lean and Lake
+  supply the proof assistant and build system. Bibliographic authorship of
+  Weibel's book is distinct from project formalization authorship. The
+  formalization.yaml standard supplies the metadata vocabulary; the filled-in
+  descriptions here are project-authored. Existing third-party licenses and
+  notices remain applicable and are not replaced by collective project credit.

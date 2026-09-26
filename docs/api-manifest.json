@@ -1,0 +1,41 @@
+{
+  "adapter_sha256": "4febff7ca5a2b623ae85b8213f575ec10f4492df05a46a6ecbd23e3fb8db78ad",
+  "analyzed_source_revision": "d5e7721b494f259272a4f87606837a2b4a1182f7",
+  "api_sha256": "2628963393b4f715a3413cb54fb14723a46bc5eec1508dde7e4099f0731f86ac",
+  "docgen_revision": "97d4ecdfc8e09e7f511724c25e303d448de6a3db",
+  "format": 1,
+  "generator": "scripts/generate_api.py",
+  "inputs": {
+    "DedekindIdealArithmetic.lean": "7f91f9ed188bf825aa30dd2ba0cc6c4cee38fef15c35c38342f83a9f838179e6",
+    "DedekindIdealArithmetic/ClassGroup/Localization.lean": "65f65c5a87680564fd1ae19c87718c780ea949d79138d03282c96178dc3a7cbf",
+    "DedekindIdealArithmetic/Ideal/AbsNorm.lean": "b357641e89bd6b2ccae938f63b39985e59d8afc174275da53d3b6525f33cb392",
+    "DedekindIdealArithmetic/Ideal/PrincipalPrime.lean": "f972a83e9c6750851eb0260bab5778986ae88a23165494bd11a61a972c0c52f0",
+    "DedekindIdealArithmeticTest.lean": "4750f4a9d6186ddcd92acc6018d28d79b3184e3288d83f4dc0db8f64d840ea7e",
+    "lake-manifest.json": "1bb24f0dab60ed630a00dac761011d47d98aa5b20389ea6d80b1ec89f2dcb8d4",
+    "lakefile.toml": "a4dcb6c7c5e9d09b545bb41680e4ac0846f81810af44e8cd94921de7180bee56",
+    "lean-toolchain": "8190e75a201741065fe508b28955dd64dd72d090babe5f70ce6848879d68ae88"
+  },
+  "modules": [
+    "DedekindIdealArithmetic.Ideal.AbsNorm",
+    "DedekindIdealArithmetic.Ideal.PrincipalPrime",
+    "DedekindIdealArithmetic.ClassGroup.Localization",
+    "DedekindIdealArithmetic",
+    "DedekindIdealArithmeticTest"
+  ],
+  "native_record_sha256": {
+    "DedekindIdealArithmetic": "8477304d06936018d9d785488fa1d58912133f04299267f95637faceb2a54280",
+    "DedekindIdealArithmetic.ClassGroup.Localization": "f1ddfaf5942617889132d693ac60fcacf9c34a3222f4961c0e89634922490040",
+    "DedekindIdealArithmetic.Ideal.AbsNorm": "3e62ab2b4c30213961a0d4e6b83baed89f093dba30679b5f39e40b33e3b3997c",
+    "DedekindIdealArithmetic.Ideal.PrincipalPrime": "210e8518a67ec3011b648e4360bacedd4f3b775922b5811cad4d3652ff9d1739",
+    "DedekindIdealArithmeticTest": "a6bb1523463562e62e5893f91233cade2e134f4bdde33e79c69dcdee8fe6c47d"
+  },
+  "proof_certification": false,
+  "public_declarations": [
+    "ClassGroup.extendedHom_surjective_of_isLocalization",
+    "ClassGroup.isPrincipalIdealRing_of_generator_of_isLocalization",
+    "ClassGroup.uniqueFactorizationMonoid_of_generator_of_isLocalization",
+    "Ideal.absNorm_lt_absNorm_of_lt",
+    "Ideal.eq_of_le_of_absNorm_eq",
+    "Ideal.exists_principal_prime_over_of_norm_natAbs_eq"
+  ]
+}
