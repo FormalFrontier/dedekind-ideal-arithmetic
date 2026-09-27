@@ -97,9 +97,11 @@ lake env lean -DwarningAsError=true -T0 DedekindIdealArithmeticTest.lean
 The final command is an ordinary warning-fatal elaboration of the client.
 `-T0` disables the allocation-count timeout; it does not set kernel trust to zero.
 It is **not** a separate stored-proof recheck or a complete transitive axiom audit.
-Complete private/generated declaration coverage, independent semantic
-and rights review, separate stored-proof rechecking, linters, generated API
-documentation and metadata validation are separate release requirements.
+Release checks include a complete transitive standard-axiom audit covering
+private/generated declarations, independent semantic and rights review, and
+lightweight documentation, metadata and applicable lint checks. Applicable
+successful build and axiom evidence may be reused. Separate stored-proof replay
+and fresh expensive documentation generation are not release prerequisites.
 A successful build alone does not establish release acceptance. At the
 2026-09-25 21:56 UTC author checkpoint, this combined readiness successor is
 unreviewed and no official release is claimed. That is a dated author snapshot,
