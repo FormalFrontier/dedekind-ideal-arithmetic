@@ -4,10 +4,37 @@ Reusable Lean theory of ideal norms, principal-prime extraction and localization
 of ideal class groups. The library extends native mathlib ideals, algebraic
 norms, localizations and class groups; it introduces no alternative encodings.
 
-This is a development library undergoing initial release preparation. The Lake
-package version is not a claim that an official release has been accepted.
-Official status is established by a separate exact-commit acceptance and
-publication record, not a mutable branch or package version.
+The mathematical core has an accepted release. A development-branch checkout,
+including a documentation or header successor, is not thereby a reviewed release:
+identify an official release by its accepted, published commit rather than its
+Lake package version or a mutable branch.
+
+## Headline results
+
+These results build on mathlib's existing ideal, norm, localization and class-group
+interfaces; this library does not redefine them.
+
+- **Norm detects strict ideal inclusion and equality.** In an infinite
+  commutative Dedekind domain with finite quotients, `I < J` and `I ≠ ⊥`
+  imply `J.absNorm < I.absNorm`. If `I ≤ J` and their absolute norms agree,
+  then `I = J`, even for the zero ideal. Neither result requires a finite-free
+  presentation over `ℤ`. See [strict norm comparison](DedekindIdealArithmetic/Ideal/AbsNorm.lean#L29)
+  and [equality](DedekindIdealArithmetic/Ideal/AbsNorm.lean#L42).
+- **A supplied prime-norm element yields a principal prime.** In an infinite
+  Dedekind domain finite free over `ℤ`, a natural prime `p` and a supplied
+  `α` with `(Algebra.norm ℤ α).natAbs = p` give a principal prime above
+  `(p)`. This is conditional existence, not a search for `α`, a class-number
+  computation or a claim that every prime has a witness. See
+  [principal-prime extraction](DedekindIdealArithmetic/Ideal/PrincipalPrime.lean#L27).
+- **Localization can kill the class group and give a PID/UFD.** For Dedekind
+  domains `A` and `B` (possibly in different universes), an `A`-algebra `B`
+  torsion-free over `A`, and an actual `IsLocalization M B`, extension
+  `Cl(A) → Cl(B)` is [surjective](DedekindIdealArithmetic/ClassGroup/Localization.lean#L37)
+  without a generator hypothesis. If every source class is an integral power
+  of a supplied `g` and `g` extends to one, the library supplies the
+  [PID criterion](DedekindIdealArithmetic/ClassGroup/Localization.lean#L59)
+  and [UFD consequence](DedekindIdealArithmetic/ClassGroup/Localization.lean#L81).
+  No class-group computation, injectivity or basic-open cover is asserted.
 
 ## Mathematical scope
 
@@ -18,9 +45,9 @@ describes exact source/pin binding and its limits.
 
 | Module | Public declarations | Meaning |
 | --- | --- | --- |
-| `DedekindIdealArithmetic.Ideal.AbsNorm` | `Ideal.absNorm_lt_absNorm_of_lt`, `Ideal.eq_of_le_of_absNorm_eq` | Strict ideal inclusion reverses absolute norm when the smaller ideal is nonzero; nested equal-norm ideals are equal, including the zero-ideal case |
-| `DedekindIdealArithmetic.Ideal.PrincipalPrime` | `Ideal.exists_principal_prime_over_of_norm_natAbs_eq` | An element with prime absolute algebraic norm generates a principal prime above that rational prime |
-| `DedekindIdealArithmetic.ClassGroup.Localization` | `ClassGroup.extendedHom_surjective_of_isLocalization`, `ClassGroup.isPrincipalIdealRing_of_generator_of_isLocalization`, `ClassGroup.uniqueFactorizationMonoid_of_generator_of_isLocalization` | Class-group extension to a Dedekind localization is onto; killing a generator of the source class group gives a PID and hence a UFD |
+| [`DedekindIdealArithmetic.Ideal.AbsNorm`](DedekindIdealArithmetic/Ideal/AbsNorm.lean) | `Ideal.absNorm_lt_absNorm_of_lt`, `Ideal.eq_of_le_of_absNorm_eq` | Strict ideal inclusion reverses absolute norm when the smaller ideal is nonzero; nested equal-norm ideals are equal, including the zero-ideal case |
+| [`DedekindIdealArithmetic.Ideal.PrincipalPrime`](DedekindIdealArithmetic/Ideal/PrincipalPrime.lean) | `Ideal.exists_principal_prime_over_of_norm_natAbs_eq` | An element with prime absolute algebraic norm generates a principal prime above that rational prime |
+| [`DedekindIdealArithmetic.ClassGroup.Localization`](DedekindIdealArithmetic/ClassGroup/Localization.lean) | `ClassGroup.extendedHom_surjective_of_isLocalization`, `ClassGroup.isPrincipalIdealRing_of_generator_of_isLocalization`, `ClassGroup.uniqueFactorizationMonoid_of_generator_of_isLocalization` | Class-group extension to a Dedekind localization is onto; killing a generator of the source class group gives a PID and hence a UFD |
 
 The norm-order results assume a commutative infinite Dedekind domain with
 `Ring.HasFiniteQuotients`. They do **not** assume a finite-free presentation over
@@ -45,7 +72,10 @@ provided.
 
 The library and its example module use Lean's native module system. Public
 declarations and imports are explicit; downstream users need only an ordinary
-import, not access to implementation-private bodies.
+import, not access to implementation-private bodies. The producer modules use
+public imports and public sections; the test module uses a plain import of
+the aggregate. Importing the aggregate is not an import-all proof interface
+for private client declarations.
 
 ```lean
 module
@@ -102,11 +132,9 @@ private/generated declarations, independent semantic and rights review, and
 lightweight documentation, metadata and applicable lint checks. Applicable
 successful build and axiom evidence may be reused. Separate stored-proof replay
 and fresh expensive documentation generation are not release prerequisites.
-A successful build alone does not establish release acceptance. At the
-2026-09-25 21:56 UTC author checkpoint, this combined readiness successor is
-unreviewed and no official release is claimed. That is a dated author snapshot,
-not a live status feed. The six entries in [formalization.yaml](formalization.yaml)
-summarize authored results, not a complete declaration census.
+A successful build alone does not establish release acceptance. The six entries
+in [formalization.yaml](formalization.yaml) summarize authored results, not a
+complete declaration census or a certificate for a new candidate.
 
 ### Expected build cost
 
@@ -118,8 +146,9 @@ the dependency artifacts. Lake reported 2,380 jobs, including dependency replays
 Allow additional time for the initial cache download and for optional tooling.
 
 The measurements used Linux, `LEAN_NUM_THREADS=2`, Lean `4.34.0-rc2` and the
-mathlib pin above. They apply to the unchanged Lean sources, Lake configuration
-and manifest of `f2f718d4e38f5b1a6ef1ce683a7ca8a405974bf6`.
+mathlib pin above. They describe the original Lean sources, Lake configuration
+and manifest measured at that checkpoint; later header-only changes were not
+benchmarked.
 These are individual wall-clock observations, not averages, performance promises
 or measurements on the reader's hardware; the records do not identify the host
 CPU model or competing workload.
@@ -140,7 +169,8 @@ aggregate concurrent memory use or a minimum RAM requirement. The runtime had a
 23 GiB memory ceiling; that ceiling is not measured consumption. Plan for several
 GiB plus headroom for simultaneous processes, particularly for full checks;
 total peak memory and a minimum supported machine size were not measured.
-No new timing or memory experiment was run for this documentation-only addition.
+No new timing or memory experiment was run for the later documentation and
+header cleanup.
 
 ## Formal sources and attribution
 
@@ -162,19 +192,17 @@ contributed the class-group/localization formalization. Development, checking
 and review have involved AI agents in the Formal Frontier project; these are
 agent identities, not claims of human authorship or independent certification.
 The source-maintainer team collectively maintains the library, with Prism
-responsible for the current initial release preparation. Detailed passage
+responsible for integration and releases. Detailed passage
 correspondence and coverage of motivating texts stay in the source metadata
 repositories and are not prerequisites for using this API.
 
-The norm-order and principal-prime proof expression adapts Prism's earlier
-original project arguments in source-weibel-k-book at
-`8b0d0347624478ed09a16007ab53ed27cabc40c0` and
-`16d8877c99c829de930d5a1c941fcc328e06aeb3`, in the respective
-`ChapterI3CyclotomicThirteenBoundaryDiagnostic.lean` and
-`ChapterI3CyclotomicSeventeenBoundaryDiagnostic.lean` experiment files.
-This is internal expression reuse, not merely a bibliographic influence or a
-claim of wholly new proof text. No book excerpt or cyclotomic computation is
-shipped. The metadata preserves the precise relationships and source-access limits.
+The norm-order and principal-prime proof expression adapts two earlier original
+project diagnostics by Prism: the 13-cyclotomic and 17-cyclotomic source-research
+developments. Both supplied finite-index norm-comparison and principal-prime-from-norm
+expression antecedents. This is original-project expression reuse, not merely a
+bibliographic influence or a claim of wholly new proof text. Exact internal
+predecessor identities remain in the project's private provenance record; no
+book excerpt, research file or concrete cyclotomic computation is shipped.
 The [documentation adapter provenance](docs/README.md#provenance)
 credits Anchor and Prism's original tooling and this library's adaptation.
 

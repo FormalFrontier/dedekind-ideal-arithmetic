@@ -58,37 +58,18 @@ related_formalizations:
       the dependency. This repository does not replace those definitions or
       vendor mathlib sources. Lake's resolved manifest also retains generated
       dependency metadata derived from mathlib's manifest.
-  - id: "FormalFrontier/source-weibel-k-book@8b0d0347624478ed09a16007ab53ed27cabc40c0"
-    relationship: "adapts"
-    note: >-
-      Prism's earlier original project contribution in
-      WeibelKBook/Experiments/ChapterI3CyclotomicThirteenBoundaryDiagnostic.lean,
-      specifically the finite-index comparison argument and private
-      exists_principal_prime_of_norm proof, is an expression antecedent of the
-      norm-order and principal-prime modules here. The extraction generalizes
-      the ambient ring and the signed norm hypothesis; it is not wholly new
-      proof expression or merely a bibliographic influence. The other
-      cyclotomic computations and source material are not included.
-  - id: "FormalFrontier/source-weibel-k-book@16d8877c99c829de930d5a1c941fcc328e06aeb3"
-    relationship: "adapts"
-    note: >-
-      The corresponding finite-index and exists_principal_prime_of_norm
-      arguments in Prism's earlier
-      WeibelKBook/Experiments/ChapterI3CyclotomicSeventeenBoundaryDiagnostic.lean
-      are also recorded predecessors. Original project contributions, including
-      this internal reuse, are covered by the operator-selected Apache-2.0
-      project licensing decision; this is not a copyright-ownership assertion
-      or an independent clearance verdict.
 
 status:
   scope: >-
-    The six declarations below describe the existing development mathematics.
+    The six declarations below describe the library's existing mathematics.
     They do not provide element-norm witnesses, class-number computations,
     injectivity of class extension or a proof that a proposed class generates
-    a class group. At the 2026-09-25 21:56 UTC author checkpoint, full release
-    verification and independent acceptance of the metadata and final assembly
-    remain outstanding. Detailed source
-    correspondence and coverage decisions remain in source repositories.
+    a class group. Existing mathematics has been reviewed and released; this
+    descriptive metadata does not certify acceptance of later candidate commits.
+    The two earlier original-project diagnostic adaptations are credited in the
+    README, with exact private predecessors retained in provenance records.
+    Detailed source correspondence and coverage decisions remain in source
+    repositories.
   main_results:
     - declaration: "Ideal.absNorm_lt_absNorm_of_lt"
       file: "DedekindIdealArithmetic/Ideal/AbsNorm.lean"
@@ -158,23 +139,14 @@ fidelity:
     class-group or ideal encoding is introduced.
 
 review:
-  status: "unchecked"
+  status: "agent-reviewed"
   notes: >-
-    At the 2026-09-25 21:56 UTC author checkpoint this metadata and the complete
-    release assembly have not received fresh independent review. This is a dated
-    author snapshot, not a live status feed. Earlier development mathematics was agent-reviewed:
-    norm-order contribution fb790bfcc327b4f1fccd95aea58b3b7f97a7aca2
-    (PR2/review1084, worker-a Task hive-request-a5b129874f865aee03e0de56cde5c57cfbede65c,
-    UID f0bfce1f-b511-4843-84ad-d809c3ebb30e);
-    principal-prime contribution ed5aa2d1b6d862a4527b64f1eebfb5f7810bcdf5
-    (PR4/review1088, worker-b Task hive-request-e1b3abe094861db427e2a42671c09fd559e8d233,
-    UID 9b7f582d-a0de-4fb1-b30f-b28d574aaa2d);
-    localization contribution 475641ba3f934cf23ffc479dd03827debd5b17b5
-    (PR6/review2256, Prism reviewing Atlas's contribution).
-    These are limited historical mathematical reviews, not review of this
-    metadata, full release rights clearance, complete stored-proof rechecking,
-    release acceptance or a source-coverage decision. No first official release
-    is claimed. A schema-valid metadata file does not certify its assertions.
+    AI-agent independent review covered the original mathematical contributions
+    and the previously released full artifact, including its metadata, rights and
+    history. This field describes earlier review; it does not approve a changed
+    checkout, substitute for exact-candidate review or certify a new release.
+    Actual release identity and accepted checks follow exact commits; a
+    schema-valid metadata file does not certify its assertions or source coverage.
 
 acknowledgements: >-
   The mathlib community supplies the underlying formal theories; Lean and Lake

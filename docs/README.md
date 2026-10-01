@@ -6,6 +6,11 @@ docstrings and relative links to this same checkout. The root README supplies
 the mathematical overview and ordinary-import example. Private tests and
 generated helpers still require a separate complete proof audit.
 
+Ordinary library use requires only its declared Lean/mathlib dependencies, not
+private native records, a doc-gen4 checkout or a SQLite database. Regenerating
+this optional reference needs native doc-gen4 analysis stored in `api.db`, the
+matching source revision, retained input records and the tool described below.
+
 No dependency website, JavaScript, fonts, styles or remote assets are shipped.
 This reference does not offer interactive search or document all of Lean/mathlib.
 Displayed headers may use short names in their source namespace; they are not
@@ -34,9 +39,10 @@ analyze every module below into one fresh database. Module names correspond to t
 
 For example, replace executable/output paths and `FULL_SOURCE_COMMIT` with the
 full source revision used for the native analysis. To reproduce the retained
-reference, use `analyzed_source_revision` from `api-manifest.json`; its eight
-source/pin inputs must match this checkout exactly. That historical object need
-not exist in a source-only or independent parentless checkout:
+reference, use `analyzed_source_revision` from `api-manifest.json` and the exact
+historical source/pin inputs recorded there, rather than assuming every later
+checkout has the same bytes. That historical object need not exist in a
+source-only or independent parentless checkout:
 
 ```sh
 mkdir /tmp/dedekind-docs
@@ -64,6 +70,17 @@ adapter change requires explicit regeneration and fresh review, not an ignored
 hash difference. Retained native records are still needed to replay this check;
 they are evidence rather than bundled dependency documentation.
 
+The shipped manifest is an **historical binding** to the original five Lean
+source hashes and three pin/configuration hashes at its analyzed revision.
+Subsequent SPDX-only changes to the five Lean headers change their source
+hashes, even though their declaration lines, signatures, docstrings, six source
+anchors and proofs are otherwise unchanged. Running the generator's
+`--check` against these later sources therefore fails the retained-source
+comparison by design; it is not a current passing check or a proof failure.
+Keep the original source and retained native data to reproduce that binding.
+Updating it requires genuine new native analysis of an exact source commit and
+independent review, not replacing the old hashes to silence a mismatch.
+
 For an intentionally new native analysis, including first generation, use
 `--refresh-binding` instead of `--check`. This authoring mode requires the chosen
 full source commit to be available locally and checks every source/pin blob
@@ -90,11 +107,13 @@ proof-audit scope. Native authored API records are not that census.
 
 `api-manifest.json` binds the analyzed commit, five source hashes, toolchain/Lake
 configuration/manifest hashes, adapter hash, native-record hashes and reference
-hash. Later documentation-only commits may retain it when those inputs remain
-identical. Any source/pin change requires fresh native generation and an explicit
-new binding. A mutable manifest is not self-authenticating: jointly forged inputs
-and hashes are outside this comparison's guarantee. Independent evidence binds
-the final full candidate commit/tree, actual native run and reviewed file bytes;
+hash. Documentation-only commits may retain it when those inputs remain
+identical; the subsequent header-only edits are source changes and do **not**
+qualify. A new current-source binding requires fresh native generation and an
+explicit new binding. A mutable manifest is not self-authenticating: jointly
+forged inputs and hashes are outside this comparison's guarantee. Independent
+evidence binds the final full candidate commit/tree, actual native run and
+reviewed file bytes;
 the manifest does not attempt to contain its own future commit ID. `--check`
 compares bytes against retained inputs; it does not authenticate their origin,
 prove remote source-URL availability, approve a public history or recheck proofs.
@@ -102,11 +121,12 @@ prove remote source-URL availability, approve a public history or recheck proofs
 ## Provenance
 
 Authors: Formal Frontier Agents. Original project contributions are Apache-2.0.
-Prism (AI agent) adapted the generator, tests and recipe from group-rings at
-`fe121a046bd40691bba6cf275273a71cd5d7d007`, itself adapted from Anchor's (AI agent)
-ideal-completion at `f0c8c34386109116e4912fb425a8ad15d9dc42a4`. This successor changes
-the inventory, per-module ownership, displayed assumptions and explanation.
-Earlier review/tests do not approve this new Dedekind adaptation.
+Prism (AI agent) adapted the generator, tests and recipe from original Group Rings
+tooling, itself adapted from Anchor's (AI agent) original Ideal Completion adapter.
+This Dedekind adaptation changes the inventory, per-module ownership, displayed
+assumptions and explanation. Exact internal predecessor revisions remain in the
+project's private provenance record.
+The earlier reviewed release does not automatically approve a later adaptation.
 In group-rings, Prism added the retained-input/explicit-refresh split and parentless
 controls after reproducing the old recipe's internal-Git-object dependency.
 Beacon supplied related portability design advice, not copied implementation.
@@ -114,5 +134,6 @@ Beacon supplied related portability design advice, not copied implementation.
 Generated Markdown contains this project's docstrings and native displayed
 mathematical signatures, not copied dependency implementations or docstrings.
 No doc-gen4 web assets are shipped. Lean, mathlib and doc-gen4 retain their credit
-and licenses upstream. Exact generated artifacts, adapted tooling, notices and
-proposed public history still require independent rights review.
+and licenses upstream. The original release's artifacts, tooling and history
+received independent review; changes to these or their notices require their
+own applicable review.
