@@ -4,11 +4,6 @@ Reusable Lean theory of ideal norms, principal-prime extraction and localization
 of ideal class groups. The library extends native mathlib ideals, algebraic
 norms, localizations and class groups; it introduces no alternative encodings.
 
-The mathematical core has an accepted release. A development-branch checkout,
-including a documentation or header successor, is not thereby a reviewed release:
-identify an official release by its accepted, published commit rather than its
-Lake package version or a mutable branch.
-
 ## Headline results
 
 These results build on mathlib's existing ideal, norm, localization and class-group
@@ -68,7 +63,22 @@ be trivial. Neither class group is assumed finite. No injectivity of class-group
 extension, concrete class-group computation or concrete basic-open cover is
 provided.
 
-## Use from Lean
+## Using the library
+
+Add the dependency to your `lakefile.toml`:
+
+```toml
+[[require]]
+name = "dedekind-ideal-arithmetic"
+git = "https://github.com/FormalFrontier/dedekind-ideal-arithmetic.git"
+rev = "main"
+```
+
+GitHub `main` contains reviewed releases. Lake resolves a release when you first
+add or explicitly update the dependency; your `lake-manifest.json` retains that
+commit until you update it again. To pin a specific release, replace `main` with
+the full commit identifier of that release from the GitHub history. Then use
+`import DedekindIdealArithmetic`, as in the example below.
 
 The library and its example module use Lean's native module system. Public
 declarations and imports are explicit; downstream users need only an ordinary
@@ -127,50 +137,10 @@ lake env lean -DwarningAsError=true -T0 DedekindIdealArithmeticTest.lean
 The final command is an ordinary warning-fatal elaboration of the client.
 `-T0` disables the allocation-count timeout; it does not set kernel trust to zero.
 It is **not** a separate stored-proof recheck or a complete transitive axiom audit.
-Release checks include a complete transitive standard-axiom audit covering
-private/generated declarations, independent semantic and rights review, and
-lightweight documentation, metadata and applicable lint checks. Applicable
-successful build and axiom evidence may be reused. Separate stored-proof replay
-and fresh expensive documentation generation are not release prerequisites.
-A successful build alone does not establish release acceptance. The six entries
-in [formalization.yaml](formalization.yaml) summarize authored results, not a
-complete declaration census or a certificate for a new candidate.
-
-### Expected build cost
-
-As a planning baseline, a clean rebuild of this library's five Lean modules
-(including the test module) took **20.52 seconds** on 2026-09-25, with the matching
-dependency cache already fetched. This is not a cold build of mathlib: the
-`lake --no-cache --wfail -v build` run followed a project-only clean and retained
-the dependency artifacts. Lake reported 2,380 jobs, including dependency replays.
-Allow additional time for the initial cache download and for optional tooling.
-
-The measurements used Linux, `LEAN_NUM_THREADS=2`, Lean `4.34.0-rc2` and the
-mathlib pin above. They describe the original Lean sources, Lake configuration
-and manifest measured at that checkpoint; later header-only changes were not
-benchmarked.
-These are individual wall-clock observations, not averages, performance promises
-or measurements on the reader's hardware; the records do not identify the host
-CPU model or competing workload.
-
-| Measured workload | Elapsed time | Conditions and scope |
-| --- | --- | --- |
-| Clean project build | 20.52 s | Five project modules; matching dependency artifacts retained |
-| Stock `leanchecker --verbose` over all five modules | 30.43 s | Already-built artifacts; a supplement, not the complete private/generated stored-proof audit |
-| Native text-style lint | 81.52 s | Includes building the lint executable; not a steady-state lint estimate |
-| Separate `doc-gen4` tool build | 139.53 s | Tool revision `97d4ecdfc8e09e7f511724c25e303d448de6a3db`; not the library build or full documentation-generation time |
-
-The source-build recorder reported **1,391,684 KiB** of child-process maximum RSS
-(about 1.33 GiB). By the stock-checker step, the full-check session's recorded
-child-process high-water mark was **5,114,676 KiB** (about 4.88 GiB). These values
-come from `getrusage(RUSAGE_CHILDREN).ru_maxrss`: the latter is cumulative across
-earlier child processes, not an isolated checker measurement. Neither value is
-aggregate concurrent memory use or a minimum RAM requirement. The runtime had a
-23 GiB memory ceiling; that ceiling is not measured consumption. Plan for several
-GiB plus headroom for simultaneous processes, particularly for full checks;
-total peak memory and a minimum supported machine size were not measured.
-No new timing or memory experiment was run for the later documentation and
-header cleanup.
+The build and client elaboration do not establish the transitive axiom
+dependencies of all declarations, including private and generated declarations.
+The six entries in [formalization.yaml](formalization.yaml) summarize authored
+results, not a complete declaration census.
 
 ## Formal sources and attribution
 
@@ -191,8 +161,7 @@ Prism contributed the norm-order and principal-prime formalizations; Atlas
 contributed the class-group/localization formalization. Development, checking
 and review have involved AI agents in the Formal Frontier project; these are
 agent identities, not claims of human authorship or independent certification.
-The source-maintainer team collectively maintains the library, with Prism
-responsible for integration and releases. Detailed passage
+The source-maintainer team collectively maintains the library. Detailed passage
 correspondence and coverage of motivating texts stay in the source metadata
 repositories and are not prerequisites for using this API.
 
