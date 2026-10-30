@@ -1,6 +1,7 @@
 name = "dedekind-ideal-arithmetic"
 version = "0.1.0"
 defaultTargets = ["DedekindIdealArithmetic", "DedekindIdealArithmeticTest"]
+lintDriver = "batteries/runLinter"
 
 [leanOptions]
 autoImplicit = false

@@ -80,6 +80,12 @@ commit until you update it again. To pin a specific release, replace `main` with
 the full commit identifier of that release from the GitHub history. Then use
 `import DedekindIdealArithmetic`, as in the example below.
 
+Use a common Lean toolchain and mathlib revision throughout your client's
+dependency closure, matching the release pins below. When combining libraries,
+choose mutually compatible published releases and align their pins; retain the
+resolved graph in `lake-manifest.json`. Following `main` or overriding only
+mathlib does not guarantee compatibility.
+
 The library and its example module use Lean's native module system. Public
 declarations and imports are explicit; downstream users need only an ordinary
 import, not access to implementation-private bodies. The producer modules use
@@ -104,9 +110,7 @@ It includes the zero/unit-ideal boundary, positive and negative norm witnesses
 in `ℤ`, identity localization and a localization of a ring with trivial class
 group. It imports only `DedekindIdealArithmetic` through the ordinary public
 interface and is built by the default target; it is not a library API to import.
-Its examples are named private theorems, preserving their proof terms in the
-compiled artifact for subsequent audits instead of relying on transient anonymous
-examples. The short snippet above demonstrates the same public API pattern.
+The short snippet above demonstrates the same public API pattern.
 
 ## Reproducible build and checks
 
@@ -142,6 +146,13 @@ dependencies of all declarations, including private and generated declarations.
 The six entries in [formalization.yaml](formalization.yaml) summarize authored
 results, not a complete declaration census.
 
+## References
+
+- Charles A. Weibel, [*The K-book: An Introduction to Algebraic K-theory*](https://sites.math.rutgers.edu/~weibel/Kbook/Kbook.pdf),
+  complete-book build dated 2013-08-29, Chapter I, section 3. Background for the
+  motivating cyclotomic examples, not a formalization of the whole book or
+  concrete class-number computations.
+
 ## Formal sources and attribution
 
 Authors: Formal Frontier Agents.
@@ -161,17 +172,14 @@ Prism contributed the norm-order and principal-prime formalizations; Atlas
 contributed the class-group/localization formalization. Development, checking
 and review have involved AI agents in the Formal Frontier project; these are
 agent identities, not claims of human authorship or independent certification.
-The source-maintainer team collectively maintains the library. Detailed passage
-correspondence and coverage of motivating texts stay in the source metadata
-repositories and are not prerequisites for using this API.
+The source-maintainer team collectively maintains the library.
 
-The norm-order and principal-prime proof expression adapts two earlier original
-project diagnostics by Prism: the 13-cyclotomic and 17-cyclotomic source-research
-developments. Both supplied finite-index norm-comparison and principal-prime-from-norm
-expression antecedents. This is original-project expression reuse, not merely a
-bibliographic influence or a claim of wholly new proof text. Exact internal
-predecessor identities remain in the project's private provenance record; no
-book excerpt, research file or concrete cyclotomic computation is shipped.
+The norm-order and principal-prime proof expression adapts Prism's earlier
+original 13-cyclotomic and 17-cyclotomic formalizations. Both supplied finite-index
+norm-comparison and principal-prime-from-norm expression antecedents. This is
+original-project expression reuse, not merely a bibliographic influence or a claim
+of wholly new proof text. No book excerpt, research file or concrete cyclotomic
+computation is shipped.
 The [documentation adapter provenance](docs/README.md#provenance)
 credits Anchor and Prism's original tooling and this library's adaptation.
 
@@ -181,5 +189,4 @@ does not identify a copyright holder or replace upstream authorship. Existing
 copyright, attribution and license notices for reused third-party material
 remain applicable. Dependency notices apply separately.
 
-The library can be used solely through its declared dependencies; internal
-project discussions and source-coverage records are not build prerequisites.
+The library can be used solely through its declared dependencies.

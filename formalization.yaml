@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
 # Authors: Formal Frontier Agents
-# Metadata prepared by Prism (AI agent); mathematical contributors named below.
 # yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/99c678e569c7c4c0772db297c5ddd5e4c9b6322e/schema/v0.4.schema.json
 version: "v0.4"
 
@@ -13,11 +12,6 @@ project:
     PID and UFD criteria when a generating class becomes trivial.
   authors:
     - "Formal Frontier Agents"
-    - "Prism (AI agent; ideal-norm and principal-prime proofs)"
-    - "Atlas (AI agent; localization and class-group proofs)"
-  responsible_maintainers:
-    - "Prism (overall integration and ideal arithmetic)"
-    - "Atlas (localization and class-group unit)"
   license: "Apache-2.0"
 
 sources:
@@ -61,15 +55,9 @@ related_formalizations:
 
 status:
   scope: >-
-    The six declarations below describe the library's existing mathematics.
-    They do not provide element-norm witnesses, class-number computations,
-    injectivity of class extension or a proof that a proposed class generates
-    a class group. Existing mathematics has been reviewed and released; this
-    descriptive metadata does not certify acceptance of later candidate commits.
-    The two earlier original-project diagnostic adaptations are credited in the
-    README, with exact private predecessors retained in provenance records.
-    Detailed source correspondence and coverage decisions remain in source
-    repositories.
+    The six declarations below describe reusable ideal arithmetic. They do not
+    provide element-norm witnesses, class-number computations, injectivity of
+    class extension or a proof that a proposed class generates a class group.
   main_results:
     - declaration: "Ideal.absNorm_lt_absNorm_of_lt"
       file: "DedekindIdealArithmetic/Ideal/AbsNorm.lean"
@@ -110,22 +98,15 @@ status:
 automation:
   methods:
     - method: "agent"
-      framework: "Hive-managed AI agents using Lean and Lake"
+      framework: "AI agents using Lean and Lake"
       tool_setup: >-
-        Prism and Atlas composed Lean proofs using native mathlib APIs,
-        compiler feedback and ordinary tactics such as rw, simp, constructor,
-        congr, by_cases and typeclass inference. Separate agent executions
-        reviewed the mathematical development contributions. Toolchain and
-        dependency revisions are recorded by the repository's Lean/Lake files.
-      prompting_notes: >-
-        Bounded project assignments required reusable statements, explicit
-        hypotheses, native API reuse, provenance and independent mathematical
-        review. No claim is made of a human-authored proof or human review.
+        AI agents composed Lean proofs using native mathlib APIs and ordinary
+        tactics such as rw, simp, constructor, congr, by_cases and typeclass
+        inference. Toolchain and dependency revisions are pinned by the
+        repository's Lean/Lake files.
   notes: >-
-    AI agents authored code, proof text, documentation and this metadata.
-    Historical model identities, total time and expenditure are not reported
-    because no complete measurements have been established for this artifact.
-    AI involvement does not itself establish origin, correctness or rights.
+    AI agents authored the Lean proofs and documentation. AI involvement does
+    not itself establish origin, correctness or rights.
 
 fidelity:
   divergences: >-
@@ -141,14 +122,12 @@ fidelity:
 review:
   status: "agent-reviewed"
   notes: >-
-    AI-agent independent review covered the original mathematical contributions
-    and the previously released full artifact, including its metadata, rights and
-    history. This field describes earlier review; it does not approve a changed
-    checkout, substitute for exact-candidate review or certify a new release.
-    Actual release identity and accepted checks follow exact commits; a
-    schema-valid metadata file does not certify its assertions or source coverage.
+    AI agents reviewed the mathematical formalization; no human review is claimed.
 
 acknowledgements: >-
+  Prism contributed the norm-order and principal-prime formalizations; Atlas
+  contributed the class-group/localization formalization. Anchor and Prism
+  contributed original documentation tooling adapted by this library.
   The mathlib community supplies the underlying formal theories; Lean and Lake
   supply the proof assistant and build system. Bibliographic authorship of
   Weibel's book is distinct from project formalization authorship. The
