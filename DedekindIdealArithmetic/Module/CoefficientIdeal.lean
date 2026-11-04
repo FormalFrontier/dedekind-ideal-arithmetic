@@ -1,0 +1,102 @@
+/-
+SPDX-License-Identifier: Apache-2.0
+Authors: Formal Frontier Agents
+-/
+module
+
+public import Mathlib.LinearAlgebra.TensorProduct.Tower
+public import Mathlib.RingTheory.Finiteness.Basic
+public import Mathlib.RingTheory.FractionalIdeal.Operations
+
+/-!
+# Coefficient ideals of modules in a rational frame
+
+A linear equivalence `e : K ⊗[R] M ≃ₗ[K] K` gives an `R`-linear coefficient
+map on `M` by sending `m` to `e (1 ⊗ₜ m)`. If `M` is finite and `K` is a
+fraction field of `R`, its image is a fractional ideal. This construction
+uses the given module, without an injectivity or freeness assumption on it.
+
+The coefficient ideal is nonzero because the tensors `1 ⊗ₜ m` span the
+rational fibre over `K`. For the scalar module `R` with its multiplication
+frame, it is the unit fractional ideal.
+
+The frame is auxiliary data for this construction; no frame-independent
+arithmetic invariant is defined here.
+-/
+
+@[expose] public section
+
+open scoped TensorProduct nonZeroDivisors
+
+namespace LinearEquiv
+
+universe u v w
+
+variable {R : Type u} {K : Type v} {M : Type w}
+variable [CommRing R] [Field K] [Algebra R K] [AddCommGroup M] [Module R M]
+variable (e : K ⊗[R] M ≃ₗ[K] K)
+
+/-- The coefficient map of a module in a rational frame. -/
+def coefficientMap : M →ₗ[R] K :=
+  (e.toLinearMap.restrictScalars R).comp (TensorProduct.mk R K M 1)
+
+@[simp]
+theorem coefficientMap_apply (m : M) :
+    e.coefficientMap m = e (1 ⊗ₜ[R] m) :=
+  rfl
+
+section FractionField
+
+variable [IsFractionRing R K] [Module.Finite R M]
+
+/-- The fractional ideal of coefficients of integral sections in a rational
+frame. Its underlying submodule is the range of the coefficient map. -/
+def coefficientIdeal : FractionalIdeal R⁰ K :=
+  ⟨LinearMap.range e.coefficientMap,
+    FractionalIdeal.isFractional_of_fg (Submodule.fg_range e.coefficientMap)⟩
+
+@[simp]
+theorem coe_coefficientIdeal :
+    (e.coefficientIdeal : Submodule R K) = LinearMap.range e.coefficientMap :=
+  rfl
+
+/-- An element belongs to the coefficient ideal exactly when it is the
+coefficient of a section of the given module. -/
+theorem mem_coefficientIdeal_iff {a : K} :
+    a ∈ e.coefficientIdeal ↔ ∃ m : M, e (1 ⊗ₜ[R] m) = a :=
+  Iff.rfl
+
+/-- The coefficient of every integral section belongs to the coefficient ideal. -/
+theorem apply_one_tmul_mem_coefficientIdeal (m : M) :
+    e (1 ⊗ₜ[R] m) ∈ e.coefficientIdeal :=
+  (e.mem_coefficientIdeal_iff).mpr ⟨m, rfl⟩
+
+/-- A rational frame forces its coefficient ideal to be nonzero, even without
+assuming that the map from the module to its rational fibre is injective. -/
+theorem coefficientIdeal_ne_zero : e.coefficientIdeal ≠ 0 := by
+  intro hI
+  have hm (m : M) : e (1 ⊗ₜ[R] m) = 0 := by
+    have hmem := e.apply_one_tmul_mem_coefficientIdeal m
+    rw [hI] at hmem
+    exact (FractionalIdeal.mem_zero_iff R⁰).mp hmem
+  have hz (x : K ⊗[R] M) : e x = 0 := by
+    induction x using TensorProduct.inductionOn with
+    | tmul a m =>
+        rw [TensorProduct.tmul_eq_smul_one_tmul, map_smul, hm, smul_zero]
+    | add x y hx hy => rw [map_add, hx, hy, add_zero]
+  exact one_ne_zero (by simpa only [apply_symm_apply] using hz (e.symm 1))
+
+end FractionField
+
+/-- The coefficient ideal of the scalar module in its multiplication frame
+is the unit fractional ideal. -/
+@[simp]
+theorem coefficientIdeal_rid [IsFractionRing R K] :
+    (TensorProduct.AlgebraTensorModule.rid R K K).coefficientIdeal =
+      (1 : FractionalIdeal R⁰ K) := by
+  apply FractionalIdeal.ext
+  intro a
+  rw [mem_coefficientIdeal_iff, FractionalIdeal.mem_one_iff]
+  simp only [TensorProduct.AlgebraTensorModule.rid_tmul, Algebra.smul_def, mul_one]
+
+end LinearEquiv

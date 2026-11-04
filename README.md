@@ -45,7 +45,11 @@ interfaces; this library does not redefine them.
   No global integral basis or principal ideal presentation is assumed.
   The normalized logarithmic height subtracts the weighted logarithmic norm
   sum from the logarithmic index and divides by `[K : ℚ]`; it can be negative.
-  See [module heights](DedekindIdealArithmetic/NumberField/ModuleHeight.lean).
+  Tensor products multiply heights and add logarithmic heights; positive
+  placewise rescaling divides by the weighted factor and subtracts its
+  degree-normalized logarithm. Pullback along an integral module equivalence
+  preserves both heights. See [module heights](DedekindIdealArithmetic/NumberField/ModuleHeight.lean)
+  and the metric modules below.
 
 ## Mathematical scope
 
@@ -59,9 +63,15 @@ covers the six ideal-norm, principal-prime and localization results; its
 | [`DedekindIdealArithmetic.Ideal.AbsNorm`](DedekindIdealArithmetic/Ideal/AbsNorm.lean) | `Ideal.absNorm_lt_absNorm_of_lt`, `Ideal.eq_of_le_of_absNorm_eq` | Strict ideal inclusion reverses absolute norm when the smaller ideal is nonzero; nested equal-norm ideals are equal, including the zero-ideal case |
 | [`DedekindIdealArithmetic.Ideal.PrincipalPrime`](DedekindIdealArithmetic/Ideal/PrincipalPrime.lean) | `Ideal.exists_principal_prime_over_of_norm_natAbs_eq` | An element with prime absolute algebraic norm generates a principal prime above that rational prime |
 | [`DedekindIdealArithmetic.ClassGroup.Localization`](DedekindIdealArithmetic/ClassGroup/Localization.lean) | `ClassGroup.extendedHom_surjective_of_isLocalization`, `ClassGroup.isPrincipalIdealRing_of_generator_of_isLocalization`, `ClassGroup.uniqueFactorizationMonoid_of_generator_of_isLocalization` | Class-group extension to a Dedekind localization is onto; killing a generator of the source class group gives a PID and hence a UFD |
-| [`DedekindIdealArithmetic.Module.Index`](DedekindIdealArithmetic/Module/Index.lean) | `Submodule.cardQuot_map_of_injective`, `Submodule.cardQuot_span_singleton_smul`, `Module.Invertible.finite_quotient_span_singleton`, `Module.Invertible.exists_nonzero_smul_eq` | Multiplicativity of quotient indices; finite section quotients and common nonzero scalar multiples for invertible modules |
+| [`DedekindIdealArithmetic.Module.Index`](DedekindIdealArithmetic/Module/Index.lean) | `Submodule.cardQuot_map_of_injective`, `Submodule.cardQuot_span_singleton_smul`, `Module.Invertible.finite_quotient_span_singleton`, `Module.Invertible.exists_nonzero_smul_eq`, `Module.Invertible.cardQuot_span_singleton_tmul` | Quotient-index laws, finite section quotients and common scalar multiples; pure-tensor section indices multiply for invertible modules over a Dedekind domain with finite quotients |
+| [`DedekindIdealArithmetic.Module.CoefficientIdeal`](DedekindIdealArithmetic/Module/CoefficientIdeal.lean) | `LinearEquiv.coefficientIdeal`, `LinearEquiv.mem_coefficientIdeal_iff`, `LinearEquiv.coefficientIdeal_ne_zero`, `LinearEquiv.coefficientIdeal_rid` | A supplied fraction-field frame of a finitely generated module over a commutative ring gives a nonzero fractional coefficient ideal, with membership and unit formulas |
+| [`DedekindIdealArithmetic.Module.RankOneSeminorm`](DedekindIdealArithmetic/Module/RankOneSeminorm.lean) | `Seminorm.extendScalarsRankOne`, `Seminorm.extendScalarsRankOne_apply_tmul`, `Seminorm.extendScalarsRankOne_unique`, `Seminorm.extendScalarsRankOne_normSeminorm` | For a normed field algebra and an invertible source vector space, uniquely extend a possibly degenerate seminorm by `pₗ(a ⊗ x) = ‖a‖ * p(x)`; definiteness is preserved and the unit line recovers the field norm |
 | [`DedekindIdealArithmetic.NumberField.ArchimedeanNorms`](DedekindIdealArithmetic/NumberField/ArchimedeanNorms.lean) | `NumberField.ArchimedeanNorms`, `ArchimedeanNorms.normProduct`, `ArchimedeanNorms.normProduct_smul`, `InfinitePlace.one_tmul_injective` (within `NumberField`) | Definite completion-fibre seminorms, their weighted product and scalar law, and injectivity of specialization for flat integral modules |
 | [`DedekindIdealArithmetic.NumberField.ModuleHeight`](DedekindIdealArithmetic/NumberField/ModuleHeight.lean) | `NumberField.ArchimedeanNorms.height_eq`, `NumberField.ArchimedeanNorms.height_pos`, `NumberField.ArchimedeanNorms.normalizedLogHeight_eq`, `NumberField.ArchimedeanNorms.unit_height`, `NumberField.ArchimedeanNorms.unit_normalizedLogHeight` | Section-independent positive height, normalized logarithmic formula and the standard unit metric |
+| [`DedekindIdealArithmetic.NumberField.MetricTensorProduct`](DedekindIdealArithmetic/NumberField/MetricTensorProduct.lean) | `NumberField.ArchimedeanNorms.tensor`, `NumberField.ArchimedeanNorms.tensor_apply_tmul`, `NumberField.ArchimedeanNorms.height_tensor`, `NumberField.ArchimedeanNorms.normalizedLogHeight_tensor` | Tensor metrics on invertible integral modules, multiplicative on fibre pure tensors; heights multiply and logarithmic heights add |
+| [`DedekindIdealArithmetic.NumberField.MetricRescaling`](DedekindIdealArithmetic/NumberField/MetricRescaling.lean) | `NumberField.ArchimedeanNorms.rescale`, `NumberField.ArchimedeanNorms.rescale_apply`, `NumberField.ArchimedeanNorms.height_rescale`, `NumberField.ArchimedeanNorms.normalizedLogHeight_rescale` | Positive placewise factors multiply whole-fibre norms, divide height by their weighted product and subtract their degree-normalized weighted logarithmic sum |
+| [`DedekindIdealArithmetic.NumberField.MetricTransport`](DedekindIdealArithmetic/NumberField/MetricTransport.lean) | `NumberField.ArchimedeanNorms.comap`, `NumberField.ArchimedeanNorms.comap_apply`, `NumberField.ArchimedeanNorms.height_comap`, `NumberField.ArchimedeanNorms.normalizedLogHeight_comap` | Contravariant metric pullback along integral module equivalences; both heights are preserved for invertible modules |
+| [`DedekindIdealArithmetic.NumberField.Completion.Extension`](DedekindIdealArithmetic/NumberField/Completion/Extension.lean) | `NumberField.InfinitePlace.Completion.completionMap_algebraMap`, `NumberField.InfinitePlace.Completion.norm_completionMap`, `NumberField.InfinitePlace.Completion.isometry_completionMap` | For field algebras and infinite places with `w.LiesOver v`, Mathlib's completion map extends the field map isometrically; the identity field map gives the identity |
 
 The norm-order results assume a commutative infinite Dedekind domain with
 `Ring.HasFiniteQuotients`. They do **not** assume a finite-free presentation over
@@ -108,11 +118,30 @@ positivity of the denominator and independence of the nonzero integral section
 are conclusions, not metric fields. The standard metric on `𝓞 K` has `H = 1`
 and `h = 0`.
 
-Only the integral-section construction over a fixed number field is provided.
-Evaluation on rational fibres via finite places and local frames, isometry
-invariance, positive metric-rescaling formulas, induced tensor norms and
-finite-extension transport remain open. This integral core does not supply the
-full normed-module height theory.
+The tensor metric multiplies norms on pure tensors of completion-fibre vectors.
+For invertible integral modules `M, N` with metrics `P, Q`, positive factors
+`c : InfinitePlace K → ℝ≥0ˣ`, and `e : M ≃ₗ[𝓞 K] N`, the metric laws are
+
+$$
+\begin{aligned}
+ H(P\otimes Q)&=H(P)H(Q), & h(P\otimes Q)&=h(P)+h(Q),\\
+ H(cP)&=\frac{H(P)}{\prod_{v\mid\infty}c_v^{\varepsilon_v}}, &
+ h(cP)&=h(P)-\frac{\sum_{v\mid\infty}\varepsilon_v\log c_v}{[K:\mathbb Q]},\\
+ H(e^*Q)&=H(Q), & h(e^*Q)&=h(Q).
+\end{aligned}
+$$
+
+Here `cP = P.rescale c` and `e*Q = Q.comap e`; the latter specifies the
+isometry condition, not invariance under an arbitrary change of metric.
+Multiplicative height is positive but need not be at least one.
+
+Auxiliary modules construct coefficient ideals in supplied rational frames,
+scalar extensions of seminorms on lines, and isometric completion maps. Their
+characteristic and unit formulas are not rational-height or finite-extension
+height evaluations. Rational finite-place/local-frame evaluation, independence
+of that evaluation from local frames, and finite-extension height transport
+remain open. The fixed-field integral construction and metric laws do not
+supply the full normed-module height theory.
 
 ## Using the library
 
@@ -200,8 +229,9 @@ scope, not a complete declaration census.
 ## References
 
 - J. S. Milne, *Abelian Varieties*, IV §6, 6.2–6.3. Reference for the normed-module
-  height conventions; the integral-section construction above is not the full
-  geometric or finite-extension theory.
+  height conventions, tensor products, positive metric rescaling and isometry
+  invariance; these fixed-field results are not the full rational, geometric
+  or finite-extension theory.
 - Charles A. Weibel, [*The K-book: An Introduction to Algebraic K-theory*](https://sites.math.rutgers.edu/~weibel/Kbook/Kbook.pdf),
   complete-book build dated 2013-08-29, Chapter I, section 3. Background for the
   motivating cyclotomic examples, not a formalization of the whole book or
@@ -223,6 +253,8 @@ uses `AddSubgroup.index_strictAnti`; principal-prime extraction uses
 license notices remain part of the upstream dependency. The height construction
 also uses mathlib's `Module.Invertible`, ideal presentations, flat base change,
 `Submodule.cardQuot`, completion seminorms and `InfinitePlace.prod_eq_abs_norm`.
+Tensor metrics reuse its base-change equivalences, and completion extensions
+reuse `NumberField.LiesOver.completionMap`.
 
 Prism contributed the norm-order and principal-prime formalizations; Atlas
 contributed the class-group/localization formalization. Development, checking

@@ -26,10 +26,13 @@ of the section are conclusions, not fields of the norm data.
 
 ## Limitations
 
-This module concerns integral sections over a fixed number field. Evaluation
-on rational fibres using finite places and local frames, isometry and metric
-rescaling, tensor norms, and induced norms and height transport through finite
-extensions are separate further constructions.
+This module concerns integral sections over a fixed number field. The companion
+modules `MetricTensorProduct`, `MetricRescaling` and `MetricTransport` supply
+tensor metrics, positive placewise rescaling and pullback along module
+equivalences, together with their height formulas. Rational finite-place and
+local-frame evaluation, independence of that evaluation from local frames, and
+compatible archimedean metrics and height transport through finite extensions
+are not provided here.
 
 ## References
 

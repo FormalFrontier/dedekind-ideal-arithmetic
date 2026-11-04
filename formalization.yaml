@@ -9,8 +9,11 @@ project:
     Reusable ideal arithmetic, module indices and intrinsic heights of normed
     invertible modules over rings of integers. Ideal-norm comparisons,
     principal-prime extraction and class-group localization sit alongside
-    finite section quotients, common scalar multiples and the integral-section
-    height and normalized logarithmic formulas.
+    finite section quotients, common scalar multiples, integral-section
+    heights and normalized logarithmic heights, with tensor-product, positive
+    metric-rescaling and equivalence-pullback formulas. Coefficient ideals,
+    rank-one seminorm scalar extension and isometric completion maps are
+    auxiliary constructions.
   authors:
     - "Formal Frontier Agents"
   license: "Apache-2.0"
@@ -51,9 +54,10 @@ sources:
     relationship: "background"
     author_endorsement: "not-contacted"
     note: >-
-      Reference for height conventions on normed invertible modules. The scope
-      here is the integral-section construction over a fixed number field,
-      not the full rational, tensor or finite-extension theory.
+      Reference for height conventions on normed invertible modules, tensor
+      products, positive metric rescaling and isometry invariance. The scope
+      here is fixed-field integral-section heights and their metric laws,
+      not the full rational, geometric or finite-extension height theory.
 
 related_formalizations:
   - id: "https://github.com/leanprover-community/mathlib4/tree/83abb3e776bdefcbc447a1e44d0debe4010039e5"
@@ -62,7 +66,9 @@ related_formalizations:
       Ideal norms and subgroup indices, class-group representatives and
       extendedHom, localization map_under, and PID/UFD instances are reused,
       as are Module.Invertible, ideal presentations, flat scalar extension,
-      quotient cardinalities, completion seminorms and infinite-place products.
+      quotient cardinalities, fractional ideals, tensor base-change
+      equivalences, completion seminorms, infinite-place products and
+      NumberField.LiesOver.completionMap.
       Mathlib contributors retain their authorship and Apache-2.0 notices in
       the dependency. This repository does not replace those definitions or
       vendor mathlib sources. Lake's resolved manifest also retains generated
@@ -118,7 +124,11 @@ highlights:
       every nonzero integral section, with ordinary norms weighted one at
       real places and two at complex places, and normalized logarithmic
       height equal to (log index minus the weighted log norm sum) divided
-      by [K:Q].
+      by [K:Q]. For two such invertible modules, tensor metrics multiply heights
+      and add normalized logarithmic heights. Positive placewise rescaling
+      divides height by the weighted product of the factors and subtracts their
+      weighted logarithmic sum divided by [K:Q]. Pullback along an O_K-linear
+      equivalence of invertible modules preserves both heights.
     declarations:
       - declaration: "NumberField.ArchimedeanNorms.height_eq"
         file: "DedekindIdealArithmetic/NumberField/ModuleHeight.lean"
@@ -126,15 +136,30 @@ highlights:
         file: "DedekindIdealArithmetic/NumberField/ModuleHeight.lean"
       - declaration: "NumberField.ArchimedeanNorms.normalizedLogHeight_eq"
         file: "DedekindIdealArithmetic/NumberField/ModuleHeight.lean"
+      - declaration: "NumberField.ArchimedeanNorms.height_tensor"
+        file: "DedekindIdealArithmetic/NumberField/MetricTensorProduct.lean"
+      - declaration: "NumberField.ArchimedeanNorms.normalizedLogHeight_tensor"
+        file: "DedekindIdealArithmetic/NumberField/MetricTensorProduct.lean"
+      - declaration: "NumberField.ArchimedeanNorms.height_rescale"
+        file: "DedekindIdealArithmetic/NumberField/MetricRescaling.lean"
+      - declaration: "NumberField.ArchimedeanNorms.normalizedLogHeight_rescale"
+        file: "DedekindIdealArithmetic/NumberField/MetricRescaling.lean"
+      - declaration: "NumberField.ArchimedeanNorms.height_comap"
+        file: "DedekindIdealArithmetic/NumberField/MetricTransport.lean"
+      - declaration: "NumberField.ArchimedeanNorms.normalizedLogHeight_comap"
+        file: "DedekindIdealArithmetic/NumberField/MetricTransport.lean"
 
 status:
   scope: >-
-    Ideal arithmetic, generic quotient indices and integral-section heights
-    are described below. Element-norm witnesses, class-number computations,
-    injectivity of class extension and proofs of proposed class generators
-    are not supplied. For heights, rational finite-place evaluation and local
-    frames, isometry invariance, metric rescaling, induced tensor norms and
-    finite-extension transport remain open; only the integral core is in scope.
+    Ideal arithmetic, generic quotient indices, integral-section heights and
+    their tensor, positive-rescaling and equivalence-pullback laws are described
+    below. Coefficient ideals in supplied rational frames, scalar extension of
+    seminorms on lines and isometric completion maps are auxiliary constructions,
+    not rational-height or finite-extension-height evaluations. Element-norm
+    witnesses, class-number computations, injectivity of class extension and
+    proofs of proposed class generators are not supplied. Rational finite-place
+    and local-frame height evaluation, independence of that evaluation from
+    local frames, and finite-extension height transport remain open.
   main_results:
     - declaration: "Ideal.absNorm_lt_absNorm_of_lt"
       file: "DedekindIdealArithmetic/Ideal/AbsNorm.lean"
@@ -192,6 +217,13 @@ status:
         Any two nonzero sections of an invertible module over a commutative
         domain admit a common nonzero scalar multiple. No finite-quotient
         hypothesis or principal presentation is required.
+    - declaration: "Module.Invertible.cardQuot_span_singleton_tmul"
+      file: "DedekindIdealArithmetic/Module/Index.lean"
+      note: >-
+        Over a commutative Dedekind domain with finite quotients, for two
+        invertible modules and nonzero sections m and n, the index of the
+        span of m tensor n is the product of their section indices. The ring
+        may be finite and the modules need not be free.
     - declaration: "NumberField.ArchimedeanNorms.height_eq"
       file: "DedekindIdealArithmetic/NumberField/ModuleHeight.lean"
       note: >-
@@ -209,6 +241,74 @@ status:
         logarithmic norm sum) divided by [K:Q] and may be negative. The standard
         metric on O_K has multiplicative height one and normalized logarithmic
         height zero.
+    - declaration: "NumberField.ArchimedeanNorms.height_tensor"
+      file: "DedekindIdealArithmetic/NumberField/MetricTensorProduct.lean"
+      note: >-
+        For a number field K and invertible O_K-modules M and N with
+        archimedean norms P and Q, (P.tensor Q).height = P.height * Q.height.
+        The tensor metric is defined on every fibre vector and multiplies
+        norms on arbitrary pure tensors of completion-fibre vectors under
+        the canonical base-change comparison. No integral basis is assumed.
+    - declaration: "NumberField.ArchimedeanNorms.normalizedLogHeight_tensor"
+      file: "DedekindIdealArithmetic/NumberField/MetricTensorProduct.lean"
+      note: >-
+        Under the same tensor hypotheses, the normalized logarithmic height
+        of P.tensor Q equals the sum of those of P and Q.
+    - declaration: "NumberField.ArchimedeanNorms.height_rescale"
+      file: "DedekindIdealArithmetic/NumberField/MetricRescaling.lean"
+      note: >-
+        For a number field K, an invertible O_K-module and positive factors
+        c : InfinitePlace K → ℝ≥0ˣ, rescale multiplies each ordinary fibre norm
+        by c_v. Its height is the original
+        height divided by the product of c_v raised to InfinitePlace.mult v.
+        The multiplicities are one at real places and two at complex places.
+    - declaration: "NumberField.ArchimedeanNorms.normalizedLogHeight_rescale"
+      file: "DedekindIdealArithmetic/NumberField/MetricRescaling.lean"
+      note: >-
+        Under the same rescaling hypotheses, normalized logarithmic height
+        is the original value minus the sum of InfinitePlace.mult v times
+        log c_v divided by [K:Q]. Height need not be at least one and
+        logarithmic height need not be nonnegative.
+    - declaration: "NumberField.ArchimedeanNorms.height_comap"
+      file: "DedekindIdealArithmetic/NumberField/MetricTransport.lean"
+      note: >-
+        For a number field K, invertible O_K-modules M and N, a metric Q on N
+        and an equivalence e : M ≃ₗ[𝓞 K] N,
+        (Q.comap e).height = Q.height. The source metric is the pullback on
+        every completion fibre; no arbitrary metric change is permitted.
+    - declaration: "NumberField.ArchimedeanNorms.normalizedLogHeight_comap"
+      file: "DedekindIdealArithmetic/NumberField/MetricTransport.lean"
+      note: >-
+        Under the same pullback hypotheses, normalized logarithmic height is
+        preserved. Metric pullback itself needs neither module invertible
+        and satisfies the identity and contravariant composition laws.
+    - declaration: "LinearEquiv.coefficientIdeal"
+      file: "DedekindIdealArithmetic/Module/CoefficientIdeal.lean"
+      note: >-
+        For a commutative ring R, a fraction field F, a finitely generated
+        R-module M and a supplied frame e : F ⊗[R] M ≃ₗ[F] F,
+        the coefficient ideal is the nonzero fractional ideal whose elements
+        are exactly e (1 tensor m) for m in M. The scalar module in its
+        multiplication frame gives the unit ideal. Neither injectivity of
+        M into its rational fibre nor integral freeness is assumed; this
+        construction does not define a frame-independent height.
+    - declaration: "Seminorm.extendScalarsRankOne"
+      file: "DedekindIdealArithmetic/Module/RankOneSeminorm.lean"
+      note: >-
+        For normed fields k and l with NormedAlgebra k l and an invertible
+        k-vector space V, any seminorm p, possibly degenerate, extends uniquely
+        to l tensor_k V with value norm(a) * p(x) on a tensor x. Restriction
+        along 1 tensor x recovers p, definiteness is preserved when p is
+        definite, and the unit line recovers the norm of l. No completeness
+        or finite-extension hypothesis is imposed; this is not a height law.
+    - declaration: "NumberField.InfinitePlace.Completion.isometry_completionMap"
+      file: "DedekindIdealArithmetic/NumberField/Completion/Extension.lean"
+      note: >-
+        For fields K and L with Algebra K L and infinite places v and w
+        satisfying w.LiesOver v, Mathlib's completionMap extends the field
+        algebra map and preserves the ordinary norm. The identity field map
+        gives the identity on the completion. No number-field, finite-extension
+        or real-place hypothesis is needed; no extension-height law is asserted.
 
 automation:
   methods:
@@ -236,9 +336,16 @@ fidelity:
     Module.Invertible rather than integral freeness and Submodule.cardQuot
     rather than prescribed indices. The metric data are definite seminorms
     on all completion-fibre vectors, not assumed section independence or
-    assumed quotient finiteness. The height formulas concern integral sections
-    only; they do not supply the remaining rational, metric-transport, tensor
-    or finite-extension theory.
+    assumed quotient finiteness. Tensor metrics use field-fibre coordinates,
+    not global integral bases, and satisfy the pure-tensor norm formula.
+    Positive rescaling uses ordinary unsquared norms and divides height by
+    the weighted factor; equivalence pullback states the precise isometry
+    condition. These laws concern fixed-field integral heights. Coefficient
+    ideals depend on supplied rational frames; seminorm scalar extensions
+    and isometric completion maps have characteristic and unit formulas but
+    do not evaluate rational or finite-extension heights. Rational finite-place
+    and local-frame height evaluation, independence of that evaluation from
+    local frames, and finite-extension height transport remain open.
 
 review:
   status: "agent-reviewed"
