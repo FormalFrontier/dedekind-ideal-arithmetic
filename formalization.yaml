@@ -6,10 +6,11 @@ version: "v0.4"
 project:
   name: "dedekind-ideal-arithmetic"
   description: >-
-    Six reusable results on ideal absolute norms, principal primes obtained
-    from element norms, and ideal class groups of Dedekind-domain localizations.
-    The localization results give surjectivity of class extension and conditional
-    PID and UFD criteria when a generating class becomes trivial.
+    Reusable ideal arithmetic, module indices and intrinsic heights of normed
+    invertible modules over rings of integers. Ideal-norm comparisons,
+    principal-prime extraction and class-group localization sit alongside
+    finite section quotients, common scalar multiples and the integral-section
+    height and normalized logarithmic formulas.
   authors:
     - "Formal Frontier Agents"
   license: "Apache-2.0"
@@ -42,22 +43,98 @@ sources:
       UFD consequences. No particular textbook's proof expression is asserted
       as the origin of this contribution.
 
+  - title: "Abelian Varieties"
+    authors:
+      - "J. S. Milne"
+    type: "book"
+    location: "IV section 6, 6.2–6.3"
+    relationship: "background"
+    author_endorsement: "not-contacted"
+    note: >-
+      Reference for height conventions on normed invertible modules. The scope
+      here is the integral-section construction over a fixed number field,
+      not the full rational, tensor or finite-extension theory.
+
 related_formalizations:
   - id: "https://github.com/leanprover-community/mathlib4/tree/83abb3e776bdefcbc447a1e44d0debe4010039e5"
     relationship: "builds-on"
     note: >-
-      Native ideal norms and subgroup indices, class-group representatives and
-      extendedHom, localization map_under, and PID/UFD instances are reused.
+      Ideal norms and subgroup indices, class-group representatives and
+      extendedHom, localization map_under, and PID/UFD instances are reused,
+      as are Module.Invertible, ideal presentations, flat scalar extension,
+      quotient cardinalities, completion seminorms and infinite-place products.
       Mathlib contributors retain their authorship and Apache-2.0 notices in
       the dependency. This repository does not replace those definitions or
       vendor mathlib sources. Lake's resolved manifest also retains generated
       dependency metadata derived from mathlib's manifest.
 
+highlights:
+  - title: "Ideal norms and inclusion"
+    statement: >-
+      In an infinite commutative Dedekind domain with finite quotients, a
+      nonzero smaller ideal has strictly larger absolute norm, and nested
+      ideals of equal absolute norm coincide.
+    declarations:
+      - declaration: "Ideal.absNorm_lt_absNorm_of_lt"
+        file: "DedekindIdealArithmetic/Ideal/AbsNorm.lean"
+      - declaration: "Ideal.eq_of_le_of_absNorm_eq"
+        file: "DedekindIdealArithmetic/Ideal/AbsNorm.lean"
+  - title: "Principal primes from element norms"
+    statement: >-
+      In an infinite commutative Dedekind domain finite free over the integers,
+      a supplied element with prime absolute algebraic norm yields a principal
+      prime above that rational prime.
+    declarations:
+      - declaration: "Ideal.exists_principal_prime_over_of_norm_natAbs_eq"
+        file: "DedekindIdealArithmetic/Ideal/PrincipalPrime.lean"
+  - title: "Class groups under localization"
+    statement: >-
+      Class extension is surjective for torsion-free localizations of Dedekind
+      domains, and a supplied class generator killed by extension makes the
+      target a principal ideal ring and a unique factorization domain.
+    declarations:
+      - declaration: "ClassGroup.extendedHom_surjective_of_isLocalization"
+        file: "DedekindIdealArithmetic/ClassGroup/Localization.lean"
+      - declaration: "ClassGroup.isPrincipalIdealRing_of_generator_of_isLocalization"
+        file: "DedekindIdealArithmetic/ClassGroup/Localization.lean"
+      - declaration: "ClassGroup.uniqueFactorizationMonoid_of_generator_of_isLocalization"
+        file: "DedekindIdealArithmetic/ClassGroup/Localization.lean"
+  - title: "Sections of invertible modules"
+    statement: >-
+      Nonzero sections of invertible modules over commutative domains with
+      finite quotients span finite-index submodules, and any two nonzero
+      sections of one invertible module over a commutative domain admit a
+      common nonzero scalar multiple.
+    declarations:
+      - declaration: "Module.Invertible.finite_quotient_span_singleton"
+        file: "DedekindIdealArithmetic/Module/Index.lean"
+      - declaration: "Module.Invertible.exists_nonzero_smul_eq"
+        file: "DedekindIdealArithmetic/Module/Index.lean"
+  - title: "Intrinsic heights of normed invertible modules"
+    statement: >-
+      For a number field K, definite seminorms on the completion fibres of an
+      invertible module over its ring of integers define a positive height
+      equal to the section index divided by the weighted norm product for
+      every nonzero integral section, with ordinary norms weighted one at
+      real places and two at complex places, and normalized logarithmic
+      height equal to (log index minus the weighted log norm sum) divided
+      by [K:Q].
+    declarations:
+      - declaration: "NumberField.ArchimedeanNorms.height_eq"
+        file: "DedekindIdealArithmetic/NumberField/ModuleHeight.lean"
+      - declaration: "NumberField.ArchimedeanNorms.height_pos"
+        file: "DedekindIdealArithmetic/NumberField/ModuleHeight.lean"
+      - declaration: "NumberField.ArchimedeanNorms.normalizedLogHeight_eq"
+        file: "DedekindIdealArithmetic/NumberField/ModuleHeight.lean"
+
 status:
   scope: >-
-    The six declarations below describe reusable ideal arithmetic. They do not
-    provide element-norm witnesses, class-number computations, injectivity of
-    class extension or a proof that a proposed class generates a class group.
+    Ideal arithmetic, generic quotient indices and integral-section heights
+    are described below. Element-norm witnesses, class-number computations,
+    injectivity of class extension and proofs of proposed class generators
+    are not supplied. For heights, rational finite-place evaluation and local
+    frames, isometry invariance, metric rescaling, induced tensor norms and
+    finite-extension transport remain open; only the integral core is in scope.
   main_results:
     - declaration: "Ideal.absNorm_lt_absNorm_of_lt"
       file: "DedekindIdealArithmetic/Ideal/AbsNorm.lean"
@@ -81,7 +158,7 @@ status:
       file: "DedekindIdealArithmetic/ClassGroup/Localization.lean"
       note: >-
         For Dedekind domains A and B with B an A-algebra torsion-free as an
-        A-module and an actual localization at M, class extension is onto.
+        A-module and a localization at M, class extension is onto.
         No injectivity or finiteness of either class group is asserted.
     - declaration: "ClassGroup.isPrincipalIdealRing_of_generator_of_isLocalization"
       file: "DedekindIdealArithmetic/ClassGroup/Localization.lean"
@@ -94,6 +171,44 @@ status:
       note: >-
         The same exact hypotheses imply unique factorization in B through
         the proved principal-ideal-ring criterion.
+    - declaration: "Submodule.cardQuot_map_of_injective"
+      file: "DedekindIdealArithmetic/Module/Index.lean"
+      note: >-
+        For an injective linear map f over a ring, the quotient index of
+        p.map f equals p.cardQuot times the quotient index of the range of f,
+        without assuming either quotient finite. For a nonzero section of a
+        torsion-free module over a domain, scalar multiplication multiplies
+        its index by the principal left-ideal index, including zero scalars
+        and infinite quotients. Over an infinite commutative Dedekind domain,
+        the scalar factor is the principal ideal's absolute norm.
+    - declaration: "Module.Invertible.finite_quotient_span_singleton"
+      file: "DedekindIdealArithmetic/Module/Index.lean"
+      note: >-
+        Over a commutative domain with finite quotients, the quotient of an
+        invertible module by the span of any nonzero section is finite.
+    - declaration: "Module.Invertible.exists_nonzero_smul_eq"
+      file: "DedekindIdealArithmetic/Module/Index.lean"
+      note: >-
+        Any two nonzero sections of an invertible module over a commutative
+        domain admit a common nonzero scalar multiple. No finite-quotient
+        hypothesis or principal presentation is required.
+    - declaration: "NumberField.ArchimedeanNorms.height_eq"
+      file: "DedekindIdealArithmetic/NumberField/ModuleHeight.lean"
+      note: >-
+        For a number field K and Module.Invertible (O_K) M, definite seminorms
+        on all vectors of each completion fibre give a positive height equal
+        to cardQuot (span {m}) divided by the weighted norm product for every
+        nonzero integral m. Ordinary unsquared completion norms carry weight
+        one at real places and two at complex places. No integral freeness or
+        stored section-independence premise is assumed.
+    - declaration: "NumberField.ArchimedeanNorms.normalizedLogHeight_eq"
+      file: "DedekindIdealArithmetic/NumberField/ModuleHeight.lean"
+      note: >-
+        Under the same height hypotheses, the normalized logarithmic height
+        at every nonzero integral section is (log index minus the weighted
+        logarithmic norm sum) divided by [K:Q] and may be negative. The standard
+        metric on O_K has multiplicative height one and normalized logarithmic
+        height zero.
 
 automation:
   methods:
@@ -117,12 +232,19 @@ fidelity:
     The localization criterion is generic and conditional on the supplied
     generator and killing proofs. These prerequisites are not a formalization
     of a concrete cyclotomic or geometric example. No new K-theory,
-    class-group or ideal encoding is introduced.
+    class-group or ideal encoding is introduced. The height construction uses
+    Module.Invertible rather than integral freeness and Submodule.cardQuot
+    rather than prescribed indices. The metric data are definite seminorms
+    on all completion-fibre vectors, not assumed section independence or
+    assumed quotient finiteness. The height formulas concern integral sections
+    only; they do not supply the remaining rational, metric-transport, tensor
+    or finite-extension theory.
 
 review:
   status: "agent-reviewed"
   notes: >-
-    AI agents reviewed the mathematical formalization; no human review is claimed.
+    AI agents reviewed the ideal-norm, principal-prime and localization results;
+    no human review is claimed.
 
 acknowledgements: >-
   Prism contributed the norm-order and principal-prime formalizations; Atlas

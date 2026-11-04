@@ -7,12 +7,13 @@ module
 public import DedekindIdealArithmetic.ClassGroup.Localization
 public import DedekindIdealArithmetic.Ideal.AbsNorm
 public import DedekindIdealArithmetic.Ideal.PrincipalPrime
+public import DedekindIdealArithmetic.NumberField.ModuleHeight
 
 /-!
 # Dedekind ideal arithmetic
 
 Public entry point for ideal absolute-norm order comparison, principal primes
-from element norms, and localization of ideal class groups. The individual
-modules document the hypotheses; importing this module re-exports all six
-library theorems and their native mathlib interfaces.
+from element norms, localization of ideal class groups, and heights of normed
+invertible modules over number fields. The individual modules document the
+hypotheses and interfaces.
 -/

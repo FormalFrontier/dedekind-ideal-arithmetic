@@ -1,12 +1,13 @@
 # dedekind-ideal-arithmetic
 
-Reusable Lean theory of ideal norms, principal-prime extraction and localization
-of ideal class groups. The library extends native mathlib ideals, algebraic
-norms, localizations and class groups; it introduces no alternative encodings.
+Reusable Lean theory of ideal norms, principal-prime extraction, localization
+of ideal class groups, and intrinsic heights of normed invertible modules over
+rings of integers. The library uses mathlib's ideals, algebraic norms, module
+invertibility, quotient indices, completions and class groups.
 
 ## Headline results
 
-These results build on mathlib's existing ideal, norm, localization and class-group
+These results build on mathlib's ideal, norm, module, localization and class-group
 interfaces; this library does not redefine them.
 
 - **Norm detects strict ideal inclusion and equality.** In an infinite
@@ -30,19 +31,37 @@ interfaces; this library does not redefine them.
   [PID criterion](DedekindIdealArithmetic/ClassGroup/Localization.lean#L59)
   and [UFD consequence](DedekindIdealArithmetic/ClassGroup/Localization.lean#L81).
   No class-group computation, injectivity or basic-open cover is asserted.
+- **Section indices, finite quotients and common multiples.** Over a domain,
+  scaling a nonzero section of a torsion-free module multiplies its quotient
+  index by the principal left-ideal index, including zero scalars and infinite
+  quotients. Over a commutative domain with finite quotients, an invertible
+  module has finite quotient by every nonzero section. Any two nonzero sections
+  of an invertible module over a commutative domain admit a common nonzero scalar
+  multiple. See [module indices](DedekindIdealArithmetic/Module/Index.lean).
+- **Intrinsic heights of normed invertible modules.** For a number field `K`,
+  an invertible `𝓞 K`-module with definite seminorms on its archimedean fibres
+  has a positive multiplicative height: the quotient index divided by the
+  weighted norm product, evaluated at **every** nonzero integral section.
+  No global integral basis or principal ideal presentation is assumed.
+  The normalized logarithmic height subtracts the weighted logarithmic norm
+  sum from the logarithmic index and divides by `[K : ℚ]`; it can be negative.
+  See [module heights](DedekindIdealArithmetic/NumberField/ModuleHeight.lean).
 
 ## Mathematical scope
 
 Import `DedekindIdealArithmetic` for the complete public interface, or one of
-the three modules below for a smaller import. The [generated API reference](docs/API.md)
-retains native displayed signatures and docstrings; its [reproduction contract](docs/README.md)
-describes exact source/pin binding and its limits.
+the modules below for a smaller import. The [generated API reference](docs/API.md)
+covers the six ideal-norm, principal-prime and localization results; its
+[reproduction contract](docs/README.md) describes exact source/pin binding and limits.
 
 | Module | Public declarations | Meaning |
 | --- | --- | --- |
 | [`DedekindIdealArithmetic.Ideal.AbsNorm`](DedekindIdealArithmetic/Ideal/AbsNorm.lean) | `Ideal.absNorm_lt_absNorm_of_lt`, `Ideal.eq_of_le_of_absNorm_eq` | Strict ideal inclusion reverses absolute norm when the smaller ideal is nonzero; nested equal-norm ideals are equal, including the zero-ideal case |
 | [`DedekindIdealArithmetic.Ideal.PrincipalPrime`](DedekindIdealArithmetic/Ideal/PrincipalPrime.lean) | `Ideal.exists_principal_prime_over_of_norm_natAbs_eq` | An element with prime absolute algebraic norm generates a principal prime above that rational prime |
 | [`DedekindIdealArithmetic.ClassGroup.Localization`](DedekindIdealArithmetic/ClassGroup/Localization.lean) | `ClassGroup.extendedHom_surjective_of_isLocalization`, `ClassGroup.isPrincipalIdealRing_of_generator_of_isLocalization`, `ClassGroup.uniqueFactorizationMonoid_of_generator_of_isLocalization` | Class-group extension to a Dedekind localization is onto; killing a generator of the source class group gives a PID and hence a UFD |
+| [`DedekindIdealArithmetic.Module.Index`](DedekindIdealArithmetic/Module/Index.lean) | `Submodule.cardQuot_map_of_injective`, `Submodule.cardQuot_span_singleton_smul`, `Module.Invertible.finite_quotient_span_singleton`, `Module.Invertible.exists_nonzero_smul_eq` | Multiplicativity of quotient indices; finite section quotients and common nonzero scalar multiples for invertible modules |
+| [`DedekindIdealArithmetic.NumberField.ArchimedeanNorms`](DedekindIdealArithmetic/NumberField/ArchimedeanNorms.lean) | `NumberField.ArchimedeanNorms`, `ArchimedeanNorms.normProduct`, `ArchimedeanNorms.normProduct_smul`, `InfinitePlace.one_tmul_injective` (within `NumberField`) | Definite completion-fibre seminorms, their weighted product and scalar law, and injectivity of specialization for flat integral modules |
+| [`DedekindIdealArithmetic.NumberField.ModuleHeight`](DedekindIdealArithmetic/NumberField/ModuleHeight.lean) | `NumberField.ArchimedeanNorms.height_eq`, `NumberField.ArchimedeanNorms.height_pos`, `NumberField.ArchimedeanNorms.normalizedLogHeight_eq`, `NumberField.ArchimedeanNorms.unit_height`, `NumberField.ArchimedeanNorms.unit_normalizedLogHeight` | Section-independent positive height, normalized logarithmic formula and the standard unit metric |
 
 The norm-order results assume a commutative infinite Dedekind domain with
 `Ring.HasFiniteQuotients`. They do **not** assume a finite-free presentation over
@@ -62,6 +81,38 @@ every class of `A` must lie in `Subgroup.zpowers g` and the extension of `g` mus
 be trivial. Neither class group is assumed finite. No injectivity of class-group
 extension, concrete class-group computation or concrete basic-open cover is
 provided.
+
+For an injective linear map `f : M →ₗ[R] N`, the index of `p.map f` is
+`p.cardQuot * (LinearMap.range f).cardQuot`, without assuming either quotient
+finite. Infinite quotients have index zero. For a nonzero section of a
+torsion-free module over an infinite Dedekind domain, the scalar factor is
+the absolute norm of the scalar's principal ideal.
+
+For heights, `M` has the hypothesis `Module.Invertible (𝓞 K) M`, not
+`Module.Free (𝓞 K) M`; nonprincipal invertible ideals are included.
+`NumberField.ArchimedeanNorms K M` supplies a definite seminorm on **all**
+vectors of each completion fibre `v.Completion ⊗[𝓞 K] M`, homogeneous for the
+ordinary, unsquared completion norm. No norm instance on the tensor product
+or on `M` is required. For every `m ≠ 0`, with `m_v = 1 ⊗ m`,
+
+$$
+ H = \frac{\#(M/\mathcal O_K m)}
+              {\prod_{v\mid\infty}\lVert m_v\rVert_v^{\varepsilon_v}},
+ \qquad h = \frac{\log H}{[K:\mathbb Q]},
+ \qquad \varepsilon_v = \begin{cases}1&v\text{ real},\\2&v\text{ complex}.\end{cases}
+$$
+
+The numerator is `Submodule.cardQuot (Submodule.span (𝓞 K) {m})`, the
+cardinality of the quotient, not prescribed index data. Quotient finiteness,
+positivity of the denominator and independence of the nonzero integral section
+are conclusions, not metric fields. The standard metric on `𝓞 K` has `H = 1`
+and `h = 0`.
+
+Only the integral-section construction over a fixed number field is provided.
+Evaluation on rational fibres via finite places and local frames, isometry
+invariance, positive metric-rescaling formulas, induced tensor norms and
+finite-extension transport remain open. This integral core does not supply the
+full normed-module height theory.
 
 ## Using the library
 
@@ -105,7 +156,7 @@ example {S : Type*} [CommRing S] [IsDedekindDomain S]
 ```
 
 [DedekindIdealArithmeticTest.lean](DedekindIdealArithmeticTest.lean) checks this
-pattern, all six public results and their composition with native mathlib APIs.
+pattern, the six ideal-arithmetic results and their composition with mathlib APIs.
 It includes the zero/unit-ideal boundary, positive and negative norm witnesses
 in `ℤ`, identity localization and a localization of a ring with trivial class
 group. It imports only `DedekindIdealArithmetic` through the ordinary public
@@ -143,11 +194,14 @@ The final command is an ordinary warning-fatal elaboration of the client.
 It is **not** a separate stored-proof recheck or a complete transitive axiom audit.
 The build and client elaboration do not establish the transitive axiom
 dependencies of all declarations, including private and generated declarations.
-The six entries in [formalization.yaml](formalization.yaml) summarize authored
-results, not a complete declaration census.
+The entries in [formalization.yaml](formalization.yaml) summarize the mathematical
+scope, not a complete declaration census.
 
 ## References
 
+- J. S. Milne, *Abelian Varieties*, IV §6, 6.2–6.3. Reference for the normed-module
+  height conventions; the integral-section construction above is not the full
+  geometric or finite-extension theory.
 - Charles A. Weibel, [*The K-book: An Introduction to Algebraic K-theory*](https://sites.math.rutgers.edu/~weibel/Kbook/Kbook.pdf),
   complete-book build dated 2013-08-29, Chapter I, section 3. Background for the
   motivating cyclotomic examples, not a formalization of the whole book or
@@ -166,7 +220,9 @@ uses `AddSubgroup.index_strictAnti`; principal-prime extraction uses
 `Mathlib.RingTheory.Ideal.Norm.AbsNorm`,
 `Mathlib.RingTheory.ClassGroup.ExtendedHom` and
 `Mathlib.RingTheory.Localization.Ideal` at the exact pin above. Their authors and
-license notices remain part of the upstream dependency.
+license notices remain part of the upstream dependency. The height construction
+also uses mathlib's `Module.Invertible`, ideal presentations, flat base change,
+`Submodule.cardQuot`, completion seminorms and `InfinitePlace.prod_eq_abs_norm`.
 
 Prism contributed the norm-order and principal-prime formalizations; Atlas
 contributed the class-group/localization formalization. Development, checking
