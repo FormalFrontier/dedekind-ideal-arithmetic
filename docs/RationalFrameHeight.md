@@ -117,6 +117,78 @@ choose a nonzero integral section, substitute both identities into `height_eq`,
 and cancel its positive finite quotient index. Taking logarithms yields the
 normalized formula.
 
+## Finite-place exponents
+
+The generic norm factorization
+`FractionalIdeal.absNorm_eq_finprod_count`, in
+[`FractionalNorm.lean`](../DedekindIdealArithmetic/Ideal/FractionalNorm.lean),
+works for a Dedekind domain `R` finite free over `ℤ`, a fraction field `F`,
+and a **nonzero** fractional ideal `J`:
+
+\[
+ N(J)=\prod_{\mathfrak p}^{\mathrm{fin}}
+       N(\mathfrak p)^{c_{\mathfrak p}(J)},\qquad
+ c_{\mathfrak p}(J)=\texttt{FractionalIdeal.count}\ F\ \mathfrak p\ J.
+\]
+
+Here the primes are `IsDedekindDomain.HeightOneSpectrum R`, and the equality
+is in `ℚ`. No number-field structure, `ℚ`-algebra structure on `F` or integral
+basis is assumed. The exponents are signed integers in the factorization
+`J = ∏ᶠ 𝔭, 𝔭 ^ c_𝔭(J)`: positive exponents give ideal factors, while negative
+exponents give inverse ideal factors. Mathlib supplies this factorization and
+its finite-support API; multiplicativity of its fractional-ideal norm gives
+the displayed norm identity.
+
+For a number field, a finite place `w : NumberField.FinitePlace K`
+corresponds to the height-one prime
+`𝔭_w = w.maximalIdeal.asIdeal`. Put
+
+\[
+ q_w=\#(\mathcal O_K/\mathfrak p_w),\qquad
+ c_w(J)=\texttt{FractionalIdeal.count}\ K\ w.\texttt{maximalIdeal}\ J.
+\]
+
+Thus `q_w = Ideal.absNorm w.maximalIdeal.asIdeal`; it is the full residue
+cardinality, not just the rational prime below `w`. If that prime is `p` and
+the residue degree is `f_w`, then `q_w = p ^ f_w`. There are no extra
+residue-degree, ramification or other finite-place weights.
+`NumberField.FinitePlace.absNorm_eq_finprod_count` casts the norm identity to
+`ℝ` and reindexes it using Mathlib's finite-place/height-one-prime equivalence:
+
+\[
+ N(J)=\prod_{w\nmid\infty}^{\mathrm{fin}}q_w^{c_w(J)}\quad(J\ne0).
+\]
+
+These are **finite-support products**, written `∏ᶠ` (`finprod`) in Lean.
+Only finitely many exponents are nonzero, so all remaining factors equal one;
+no analytic convergence or limiting product is involved. The hypothesis
+`J ≠ 0` is essential: `count` is zero at the zero ideal, so its displayed
+product would be one, whereas its absolute norm is zero. The zero-inclusive
+index/norm laws in the preceding section are distinct statements.
+
+Substituting `J = I = e.coefficientIdeal` in the reciprocal formula gives
+
+\[
+ \boxed{\quad
+ H(P)=\frac{\displaystyle\prod_{w\nmid\infty}^{\mathrm{fin}}q_w^{-c_w(I)}}
+             {\displaystyle\prod_{v\mid\infty}
+                  P_v(u)^{\operatorname{mult}(v)}}.
+ \quad}
+\]
+
+This is `NumberField.ArchimedeanNorms.height_eq_finitePlace`, in
+[`FinitePlaceHeight.lean`](../DedekindIdealArithmetic/NumberField/FinitePlaceHeight.lean).
+The numerator has the **negative** coefficient-ideal exponents because it is
+`N(I)⁻¹`. The denominator uses `P.rationalEval v (e.symm 1)`, with weight
+one at real places and two at complex places. The theorem assumes
+`Module.Invertible (𝓞 K) M` and a supplied rational frame, not an integral
+basis, a chosen section or additional metric data. The coefficient ideal is
+nonzero by `e.coefficientIdeal_ne_zero`, so the zero-ideal boundary requires
+no extra hypothesis in the height theorem. It evaluates the same `P.height`,
+not a new height or a family of finite-place norms. The normalization is
+unchanged: no degree root in multiplicative height; the logarithmic formula
+above is `normalizedLogHeight_eq_rationalFrame`.
+
 ## Frame changes and metric rescaling
 
 For another frame `e'`, put \(z=e'(e^{-1}(1))\ne0\). The laws
@@ -132,15 +204,18 @@ The reciprocal formula divides height by
 \(\prod_v c_v^{\operatorname{mult}(v)}\), as in `height_rescale`.
 
 For the standard unit metric on `𝓞 K` and the multiplication frame,
-`coefficientIdeal_rid` and `unit_rationalEval_one` make both factors one,
-agreeing with `unit_height`. Constant positive rescaling by \(t\) gives
+`coefficientIdeal_rid` and `unit_rationalEval_one` make both factors one;
+all finite-place exponents vanish, agreeing with `unit_height`.
+Constant positive rescaling by \(t\) gives
 height \(t^{-n}\) and normalized logarithmic height \(-\log t\). These
 metrics illustrate both the reciprocal convention and genuine variation.
 
 ## Scope
 
-These are fixed-field evaluations of the intrinsic height. They do not supply
-explicit finite-place local norms, finite-place support, a local-frame height
-formula, or height transport through finite extensions. A dual-evaluation
+These are fixed-field evaluations of the intrinsic height, including an
+arithmetic finite-place exponent formula with finite support. They do not
+construct norms on finite-completion fibres, identify their unit balls, or
+provide tensor transport of finite local frames to those fibres. Nor do they
+give height transport through finite extensions. A dual-evaluation
 interpretation via the inverse coefficient ideal is not required for the
 index proof and is not asserted here.

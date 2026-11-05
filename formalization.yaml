@@ -13,10 +13,13 @@ project:
     heights and normalized logarithmic heights, with tensor-product, positive
     metric-rescaling and equivalence-pullback formulas. Rational frames evaluate
     the same intrinsic height through coefficient-ideal norms and weighted
-    archimedean products, using generic fractional-ideal index comparisons.
-    Relative-degree formulas for weighted infinite-place products, extension
-    laws for fractional-ideal norms, rank-one seminorm scalar extension and
-    isometric completion maps supply further interfaces.
+    archimedean products. Nonzero fractional-ideal norms factor as finite-support
+    prime-norm products with signed exponents; over number fields, negative
+    coefficient-ideal exponents give the finite-place numerator of height.
+    Generic fractional-ideal index comparisons, relative-degree formulas for
+    weighted infinite-place products, extension laws for fractional-ideal norms,
+    rank-one seminorm scalar extension and isometric completion maps supply
+    further interfaces.
   authors:
     - "Formal Frontier Agents"
   license: "Apache-2.0"
@@ -59,9 +62,10 @@ sources:
     note: >-
       Reference for height conventions on normed invertible modules, tensor
       products, positive metric rescaling and isometry invariance. The scope
-      here is fixed-field intrinsic heights, integral-section and supplied
-      rational-frame evaluations, and their metric laws, not the full
-      finite-place, geometric or finite-extension height theory.
+      here is fixed-field intrinsic heights, integral-section, rational-frame
+      and arithmetic finite-place evaluations, and their metric laws. It does
+      not construct norms on finite-completion fibres or supply the full
+      geometric or finite-extension height theory.
 
 related_formalizations:
   - id: "https://github.com/leanprover-community/mathlib4/tree/83abb3e776bdefcbc447a1e44d0debe4010039e5"
@@ -70,25 +74,31 @@ related_formalizations:
       Ideal norms and subgroup indices, class-group representatives and
       extendedHom, localization map_under, and PID/UFD instances are reused,
       as are Module.Invertible, ideal presentations, flat scalar extension,
-      quotient cardinalities, fractional ideals, tensor base-change
-      equivalences, completion seminorms, infinite-place products and
-      NumberField.LiesOver.completionMap.
+      quotient cardinalities, fractional ideals and their signed prime
+      factorizations, finite-place/height-one-prime equivalences, tensor
+      base-change equivalences, completion seminorms, infinite-place products
+      and NumberField.LiesOver.completionMap.
       Mathlib contributors retain their authorship and Apache-2.0 notices in
       the dependency. This repository does not replace those definitions or
       vendor mathlib sources. Lake's resolved manifest also retains generated
       dependency metadata derived from mathlib's manifest.
 
 highlights:
-  - title: "Ideal norms and inclusion"
+  - title: "Ideal norms, inclusion and prime factorization"
     statement: >-
       In an infinite commutative Dedekind domain with finite quotients, a
       nonzero smaller ideal has strictly larger absolute norm, and nested
-      ideals of equal absolute norm coincide.
+      ideals of equal absolute norm coincide. Over a Dedekind domain finite
+      free over the integers, the norm of each nonzero fractional ideal is
+      the finite-support product of height-one prime norms raised to signed
+      integer exponents. Its fraction field needs no number-field structure.
     declarations:
       - declaration: "Ideal.absNorm_lt_absNorm_of_lt"
         file: "DedekindIdealArithmetic/Ideal/AbsNorm.lean"
       - declaration: "Ideal.eq_of_le_of_absNorm_eq"
         file: "DedekindIdealArithmetic/Ideal/AbsNorm.lean"
+      - declaration: "FractionalIdeal.absNorm_eq_finprod_count"
+        file: "DedekindIdealArithmetic/Ideal/FractionalNorm.lean"
   - title: "Principal primes from element norms"
     statement: >-
       In an infinite commutative Dedekind domain finite free over the integers,
@@ -133,11 +143,15 @@ highlights:
       divides height by the weighted product of the factors and subtracts their
       weighted logarithmic sum divided by [K:Q]. Pullback along an O_K-linear
       equivalence of invertible modules preserves both heights. Every supplied
-      rational frame evaluates the same height as the reciprocal of its
-      coefficient-ideal norm times the weighted archimedean product at its
-      rational unit vector. Only logarithmic height is divided by [K:Q].
-      Explicit finite-place local norms and finite-extension height transport
-      are not provided.
+      rational frame evaluates the same height as the reciprocal of the
+      product of its coefficient-ideal norm and the weighted archimedean
+      product at its rational unit vector. Equivalently, height is the
+      finite-support product of residue cardinalities with negative
+      coefficient-ideal exponents, divided by that archimedean product.
+      The coefficient ideal is automatically nonzero, and the residue
+      cardinalities require no additional finite-place weights. Only
+      logarithmic height is divided by [K:Q]. Norms on finite-completion
+      fibres and finite-extension height transport are not provided.
     declarations:
       - declaration: "NumberField.ArchimedeanNorms.height_eq"
         file: "DedekindIdealArithmetic/NumberField/ModuleHeight.lean"
@@ -169,21 +183,29 @@ highlights:
         file: "DedekindIdealArithmetic/NumberField/InfinitePlaceProducts.lean"
       - declaration: "FractionalIdeal.absNorm_extendedHom"
         file: "DedekindIdealArithmetic/Ideal/FractionalNorm.lean"
+      - declaration: "NumberField.FinitePlace.absNorm_eq_finprod_count"
+        file: "DedekindIdealArithmetic/NumberField/FinitePlaceHeight.lean"
+      - declaration: "NumberField.ArchimedeanNorms.height_eq_finitePlace"
+        file: "DedekindIdealArithmetic/NumberField/FinitePlaceHeight.lean"
 
 status:
   scope: >-
     Ideal arithmetic, generic quotient indices, intrinsic fixed-field heights
     and their tensor, positive-rescaling and equivalence-pullback laws are
     described below. Supplied rational frames evaluate height through their
-    coefficient-ideal norms and weighted rational-fibre norm products. Generic
-    fractional-ideal norm/index comparisons include zero ideals and sections.
-    Weighted infinite-place products, fractional-ideal norm extension formulas,
-    seminorm scalar extension and isometric completion maps supply further
-    interfaces, not finite-extension-height evaluations. Element-norm witnesses,
-    class-number computations, injectivity of class extension and proofs of
-    proposed class generators are not supplied. Explicit finite-place local
-    norms, finite support and local-frame height evaluations, and
-    finite-extension height transport remain open.
+    coefficient-ideal norms and weighted rational-fibre norm products, or
+    through residue-cardinality products with negative coefficient-ideal
+    exponents and the same archimedean denominator. These products have finite
+    support. Generic fractional-ideal norm/index comparisons include zero
+    ideals and sections; prime-exponent norm factorization requires a nonzero
+    ideal, as supplied automatically by a rational frame. Weighted infinite-place
+    products, fractional-ideal norm extension formulas, seminorm scalar extension
+    and isometric completion maps supply further interfaces, not
+    finite-extension-height evaluations. Element-norm witnesses, class-number
+    computations, injectivity of class extension and proofs of proposed class
+    generators are not supplied. The finite-place exponent formula does not
+    construct finite-completion fibre norms, their unit balls or tensor transport
+    of finite local frames. Finite-extension height transport remains open.
   main_results:
     - declaration: "Ideal.absNorm_lt_absNorm_of_lt"
       file: "DedekindIdealArithmetic/Ideal/AbsNorm.lean"
@@ -314,6 +336,35 @@ status:
         a fractional ideal I has norm cardQuot (span {x}) times norm I.
         Zero ideals and elements are included; infinite indices are zero.
         No number-field structure on the fraction field is required.
+    - declaration: "FractionalIdeal.absNorm_eq_finprod_count"
+      file: "DedekindIdealArithmetic/Ideal/FractionalNorm.lean"
+      note: >-
+        For a Dedekind domain R finite free over the integers and a fraction
+        field F, absNorm I equals the rational finite-support product of
+        Ideal.absNorm p.asIdeal raised to FractionalIdeal.count F p I, over
+        height-one primes p, provided I is nonzero. No NumberField F,
+        Q-algebra structure on F or integral basis is required. At the zero
+        ideal all counts vanish, giving product one rather than norm zero.
+    - declaration: "NumberField.FinitePlace.absNorm_eq_finprod_count"
+      file: "DedekindIdealArithmetic/NumberField/FinitePlaceHeight.lean"
+      note: >-
+        For a number field K and a nonzero fractional ideal I, the real cast
+        of absNorm I is the finite-support product over finite places w of
+        q_w raised to FractionalIdeal.count K w.maximalIdeal I, where
+        q_w = Ideal.absNorm w.maximalIdeal.asIdeal is the residue cardinality.
+        The signed exponents use no extra finite-place weights.
+    - declaration: "NumberField.ArchimedeanNorms.height_eq_finitePlace"
+      file: "DedekindIdealArithmetic/NumberField/FinitePlaceHeight.lean"
+      note: >-
+        For a number field K, Module.Invertible (O_K) M, archimedean norms P
+        and any rational frame e, P.height equals the finite-support product
+        of residue cardinalities raised to the negatives of the counts of
+        e.coefficientIdeal, divided by the product of
+        P.rationalEval v (e.symm 1) raised to v.mult over infinite places v.
+        Nonzeroness of the coefficient ideal follows from the frame. No
+        integral section, integral basis, new height or further metric data
+        are required. The denominator has weights one at real places and
+        two at complex places; multiplicative height has no degree root.
     - declaration: "LinearEquiv.cardQuot_span_singleton_mul_absNorm_coefficientIdeal"
       file: "DedekindIdealArithmetic/Module/CoefficientIdealNorm.lean"
       note: >-
@@ -335,9 +386,9 @@ status:
       note: >-
         For a number field and an invertible module over its ring of integers,
         every supplied rational frame evaluates the existing intrinsic height
-        as the inverse of the coefficient-ideal norm times the weighted
-        archimedean norm product of its rational unit vector. No integral basis
-        or second height definition is introduced.
+        as the reciprocal of the product of the coefficient-ideal norm and
+        the weighted archimedean norm product of its rational unit vector.
+        No integral basis or second height definition is introduced.
     - declaration: "NumberField.ArchimedeanNorms.normalizedLogHeight_eq_rationalFrame"
       file: "DedekindIdealArithmetic/NumberField/RationalFrameHeight.lean"
       note: >-
@@ -378,7 +429,7 @@ automation:
     - method: "agent"
       framework: "AI agents using Lean and Lake"
       tool_setup: >-
-        AI agents composed Lean proofs using native mathlib APIs and ordinary
+        AI agents composed Lean proofs using mathlib APIs and ordinary
         tactics such as rw, simp, constructor, congr, by_cases and typeclass
         inference. Toolchain and dependency revisions are pinned by the
         repository's Lean/Lake files.
@@ -406,11 +457,17 @@ fidelity:
     condition. These laws concern fixed-field intrinsic heights. Coefficient
     ideals depend on supplied rational frames, while their norms combined with
     the weighted rational unit-vector norm product evaluate the same intrinsic
-    height in every frame. Only normalized logarithmic height is divided by
-    the degree. Seminorm scalar extensions and isometric completion maps
-    supply further interfaces, not finite-extension height formulas. Explicit
-    finite-place local norms, finite support and local-frame height evaluations,
-    and finite-extension height transport remain open.
+    height in every frame. The generic prime-exponent norm formula works over
+    any Dedekind domain finite free over the integers and its fraction field,
+    without a number-field or Q-algebra hypothesis on that field; it requires
+    a nonzero ideal. Reindexing it by finite places expresses height using
+    negative coefficient-ideal exponents and residue cardinalities, without
+    adding finite-place norm or valuation data. Only normalized logarithmic
+    height is divided by the degree. Seminorm scalar extensions and isometric
+    completion maps supply further interfaces, not finite-extension height
+    formulas. Finite-completion fibre norm constructions, unit-ball
+    identifications, tensor transport of finite local frames and finite-extension
+    height transport remain open.
 
 review:
   status: "agent-reviewed"

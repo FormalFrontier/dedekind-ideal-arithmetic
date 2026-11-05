@@ -12,6 +12,7 @@ public import DedekindIdealArithmetic.Module.CoefficientIdeal
 public import DedekindIdealArithmetic.Module.CoefficientIdealNorm
 public import DedekindIdealArithmetic.Module.RankOneSeminorm
 public import DedekindIdealArithmetic.NumberField.Completion.Extension
+public import DedekindIdealArithmetic.NumberField.FinitePlaceHeight
 public import DedekindIdealArithmetic.NumberField.InfinitePlaceProducts
 public import DedekindIdealArithmetic.NumberField.MetricRescaling
 public import DedekindIdealArithmetic.NumberField.MetricTensorProduct
@@ -39,8 +40,10 @@ for torsion-free extensions of Dedekind domains finite free over the integers.
 
 A rational frame evaluates the intrinsic height through the absolute norm of
 its coefficient ideal and the weighted archimedean product of its unit vector.
-The index comparison holds also for zero sections; the height formula concerns
-invertible modules and does not assume an integral basis. Explicit finite-place
-local norms and finite-extension height transport are not provided. The
-individual modules document the hypotheses and interfaces.
+Nonzero fractional-ideal norms are finite-support products of prime norms raised
+to their signed exponents. The height therefore also has a finite-place exponent
+formula. The index comparison holds also for zero sections; the height formulas
+concern invertible modules and do not assume an integral basis. Norms on finite
+completion fibres, local-frame transport and finite-extension height transport
+are not provided. The individual modules document the hypotheses and interfaces.
 -/
