@@ -4,9 +4,11 @@ Authors: Formal Frontier Agents
 -/
 module
 
+public import Mathlib.Algebra.Module.Torsion.Free
 public import Mathlib.LinearAlgebra.TensorProduct.Tower
 public import Mathlib.RingTheory.Finiteness.Basic
 public import Mathlib.RingTheory.FractionalIdeal.Operations
+public import Mathlib.RingTheory.Localization.BaseChange
 
 /-!
 # Coefficient ideals of modules in a rational frame
@@ -17,8 +19,16 @@ fraction field of `R`, its image is a fractional ideal. This construction
 uses the given module, without an injectivity or freeness assumption on it.
 
 The coefficient ideal is nonzero because the tensors `1 ⊗ₜ m` span the
-rational fibre over `K`. For the scalar module `R` with its multiplication
-frame, it is the unit fractional ideal.
+rational fibre over `K`. Over a fraction field, the coefficient map of a
+torsion-free module is injective, without any finiteness assumption. When the
+module is also finite,
+`LinearEquiv.ofInjective e.coefficientMap e.coefficientMap_injective` identifies
+it with `e.coefficientIdeal`, whose underlying submodule is definitionally the
+range. The coercion and inverse formulas are `LinearEquiv.ofInjective_apply`
+and `LinearEquiv.ofInjective_symm_apply`.
+
+For the scalar module `R` with its multiplication frame, the coefficient map
+is the algebra map and its ideal is the unit fractional ideal.
 
 The frame is auxiliary data for this construction; no frame-independent
 arithmetic invariant is defined here.
@@ -44,6 +54,24 @@ def coefficientMap : M →ₗ[R] K :=
 theorem coefficientMap_apply (m : M) :
     e.coefficientMap m = e (1 ⊗ₜ[R] m) :=
   rfl
+
+/-- A rational frame embeds a torsion-free module into its fraction field.
+No finiteness assumption on the module is needed. -/
+theorem coefficientMap_injective [IsFractionRing R K] [Module.IsTorsionFree R M] :
+    Function.Injective e.coefficientMap := by
+  have h : Function.Injective (TensorProduct.mk R K M 1) := by
+    apply (IsLocalizedModule.injective_iff_isRegular R⁰
+      (TensorProduct.mk R K M 1)).mpr
+    intro c
+    exact (isRegular_iff_mem_nonZeroDivisors.mpr c.property).isSMulRegular
+  exact e.injective.comp h
+
+/-- In the multiplication frame of the scalar module, coefficients are
+images under the algebra map. -/
+theorem coefficientMap_rid (r : R) :
+    (TensorProduct.AlgebraTensorModule.rid R K K).coefficientMap r = algebraMap R K r := by
+  simp only [coefficientMap_apply, TensorProduct.AlgebraTensorModule.rid_tmul,
+    Algebra.smul_def, mul_one]
 
 section FractionField
 
@@ -98,5 +126,19 @@ theorem coefficientIdeal_rid [IsFractionRing R K] :
   intro a
   rw [mem_coefficientIdeal_iff, FractionalIdeal.mem_one_iff]
   simp only [TensorProduct.AlgebraTensorModule.rid_tmul, Algebra.smul_def, mul_one]
+
+/-- For the scalar multiplication frame, the inverse of the equivalence
+onto the coefficient ideal recovers the scalar represented by a coefficient. -/
+@[simp]
+theorem algebraMap_ofInjective_coefficientMap_rid_symm_apply [IsFractionRing R K]
+    (a : (TensorProduct.AlgebraTensorModule.rid R K K).coefficientIdeal) :
+    algebraMap R K ((LinearEquiv.ofInjective
+      (TensorProduct.AlgebraTensorModule.rid R K K).coefficientMap
+      (TensorProduct.AlgebraTensorModule.rid R K K).coefficientMap_injective).symm a) =
+        (a : K) := by
+  simpa only [coefficientMap_rid] using
+    (LinearEquiv.ofInjective_symm_apply
+      (f := (TensorProduct.AlgebraTensorModule.rid R K K).coefficientMap)
+      (h := (TensorProduct.AlgebraTensorModule.rid R K K).coefficientMap_injective) a)
 
 end LinearEquiv

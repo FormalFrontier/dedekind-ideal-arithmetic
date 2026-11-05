@@ -11,7 +11,9 @@ project:
     principal-prime extraction and class-group localization sit alongside
     finite section quotients, common scalar multiples, integral-section
     heights and normalized logarithmic heights, with tensor-product, positive
-    metric-rescaling and equivalence-pullback formulas. Coefficient ideals,
+    metric-rescaling and equivalence-pullback formulas. Coefficient lattices,
+    placewise rational-fibre evaluation, relative-degree formulas for weighted
+    infinite-place products, extension laws for fractional-ideal absolute norms,
     rank-one seminorm scalar extension and isometric completion maps are
     auxiliary constructions.
   authors:
@@ -128,7 +130,11 @@ highlights:
       and add normalized logarithmic heights. Positive placewise rescaling
       divides height by the weighted product of the factors and subtracts their
       weighted logarithmic sum divided by [K:Q]. Pullback along an O_K-linear
-      equivalence of invertible modules preserves both heights.
+      equivalence of invertible modules preserves both heights. Auxiliary
+      coefficient lattices, rational-fibre norms, weighted infinite-place
+      products and fractional-ideal norm extension formulas support these
+      interfaces; they do not yet provide rational frame invariance or
+      finite-extension height transport.
     declarations:
       - declaration: "NumberField.ArchimedeanNorms.height_eq"
         file: "DedekindIdealArithmetic/NumberField/ModuleHeight.lean"
@@ -148,14 +154,24 @@ highlights:
         file: "DedekindIdealArithmetic/NumberField/MetricTransport.lean"
       - declaration: "NumberField.ArchimedeanNorms.normalizedLogHeight_comap"
         file: "DedekindIdealArithmetic/NumberField/MetricTransport.lean"
+      - declaration: "LinearEquiv.coefficientMap_injective"
+        file: "DedekindIdealArithmetic/Module/CoefficientIdeal.lean"
+      - declaration: "NumberField.ArchimedeanNorms.rationalEval_eq_zero_iff"
+        file: "DedekindIdealArithmetic/NumberField/RationalFibre.lean"
+      - declaration: "NumberField.InfinitePlace.prod_comap_pow_mult"
+        file: "DedekindIdealArithmetic/NumberField/InfinitePlaceProducts.lean"
+      - declaration: "FractionalIdeal.absNorm_extendedHom"
+        file: "DedekindIdealArithmetic/Ideal/FractionalNorm.lean"
 
 status:
   scope: >-
     Ideal arithmetic, generic quotient indices, integral-section heights and
     their tensor, positive-rescaling and equivalence-pullback laws are described
-    below. Coefficient ideals in supplied rational frames, scalar extension of
-    seminorms on lines and isometric completion maps are auxiliary constructions,
-    not rational-height or finite-extension-height evaluations. Element-norm
+    below. Coefficient ideals in supplied rational frames, rational-fibre norms,
+    weighted infinite-place products, fractional-ideal norm extension formulas,
+    scalar extension of seminorms on lines and isometric completion maps are
+    auxiliary constructions, not rational-height or finite-extension-height
+    evaluations. Element-norm
     witnesses, class-number computations, injectivity of class extension and
     proofs of proposed class generators are not supplied. Rational finite-place
     and local-frame height evaluation, independence of that evaluation from

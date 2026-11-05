@@ -61,10 +61,11 @@ covers the six ideal-norm, principal-prime and localization results; its
 | Module | Public declarations | Meaning |
 | --- | --- | --- |
 | [`DedekindIdealArithmetic.Ideal.AbsNorm`](DedekindIdealArithmetic/Ideal/AbsNorm.lean) | `Ideal.absNorm_lt_absNorm_of_lt`, `Ideal.eq_of_le_of_absNorm_eq` | Strict ideal inclusion reverses absolute norm when the smaller ideal is nonzero; nested equal-norm ideals are equal, including the zero-ideal case |
+| [`DedekindIdealArithmetic.Ideal.FractionalNorm`](DedekindIdealArithmetic/Ideal/FractionalNorm.lean) | `FractionalIdeal.absNorm_extendedHom` | Extension raises the absolute norm of every fractional ideal, including zero, to the relative module rank, for torsion-free extensions of Dedekind domains finite free over the integers |
 | [`DedekindIdealArithmetic.Ideal.PrincipalPrime`](DedekindIdealArithmetic/Ideal/PrincipalPrime.lean) | `Ideal.exists_principal_prime_over_of_norm_natAbs_eq` | An element with prime absolute algebraic norm generates a principal prime above that rational prime |
 | [`DedekindIdealArithmetic.ClassGroup.Localization`](DedekindIdealArithmetic/ClassGroup/Localization.lean) | `ClassGroup.extendedHom_surjective_of_isLocalization`, `ClassGroup.isPrincipalIdealRing_of_generator_of_isLocalization`, `ClassGroup.uniqueFactorizationMonoid_of_generator_of_isLocalization` | Class-group extension to a Dedekind localization is onto; killing a generator of the source class group gives a PID and hence a UFD |
 | [`DedekindIdealArithmetic.Module.Index`](DedekindIdealArithmetic/Module/Index.lean) | `Submodule.cardQuot_map_of_injective`, `Submodule.cardQuot_span_singleton_smul`, `Module.Invertible.finite_quotient_span_singleton`, `Module.Invertible.exists_nonzero_smul_eq`, `Module.Invertible.cardQuot_span_singleton_tmul` | Quotient-index laws, finite section quotients and common scalar multiples; pure-tensor section indices multiply for invertible modules over a Dedekind domain with finite quotients |
-| [`DedekindIdealArithmetic.Module.CoefficientIdeal`](DedekindIdealArithmetic/Module/CoefficientIdeal.lean) | `LinearEquiv.coefficientIdeal`, `LinearEquiv.mem_coefficientIdeal_iff`, `LinearEquiv.coefficientIdeal_ne_zero`, `LinearEquiv.coefficientIdeal_rid` | A supplied fraction-field frame of a finitely generated module over a commutative ring gives a nonzero fractional coefficient ideal, with membership and unit formulas |
+| [`DedekindIdealArithmetic.Module.CoefficientIdeal`](DedekindIdealArithmetic/Module/CoefficientIdeal.lean) | `LinearEquiv.coefficientMap_injective`, `LinearEquiv.coefficientIdeal`, `LinearEquiv.mem_coefficientIdeal_iff`, `LinearEquiv.coefficientIdeal_ne_zero`, `LinearEquiv.coefficientIdeal_rid` | Over a fraction field, a supplied frame embeds a torsion-free module; when finite, its image is a nonzero fractional coefficient ideal, identified with the module by the range equivalence |
 | [`DedekindIdealArithmetic.Module.RankOneSeminorm`](DedekindIdealArithmetic/Module/RankOneSeminorm.lean) | `Seminorm.extendScalarsRankOne`, `Seminorm.extendScalarsRankOne_apply_tmul`, `Seminorm.extendScalarsRankOne_unique`, `Seminorm.extendScalarsRankOne_normSeminorm` | For a normed field algebra and an invertible source vector space, uniquely extend a possibly degenerate seminorm by `pₗ(a ⊗ x) = ‖a‖ * p(x)`; definiteness is preserved and the unit line recovers the field norm |
 | [`DedekindIdealArithmetic.NumberField.ArchimedeanNorms`](DedekindIdealArithmetic/NumberField/ArchimedeanNorms.lean) | `NumberField.ArchimedeanNorms`, `ArchimedeanNorms.normProduct`, `ArchimedeanNorms.normProduct_smul`, `InfinitePlace.one_tmul_injective` (within `NumberField`) | Definite completion-fibre seminorms, their weighted product and scalar law, and injectivity of specialization for flat integral modules |
 | [`DedekindIdealArithmetic.NumberField.ModuleHeight`](DedekindIdealArithmetic/NumberField/ModuleHeight.lean) | `NumberField.ArchimedeanNorms.height_eq`, `NumberField.ArchimedeanNorms.height_pos`, `NumberField.ArchimedeanNorms.normalizedLogHeight_eq`, `NumberField.ArchimedeanNorms.unit_height`, `NumberField.ArchimedeanNorms.unit_normalizedLogHeight` | Section-independent positive height, normalized logarithmic formula and the standard unit metric |
@@ -72,6 +73,8 @@ covers the six ideal-norm, principal-prime and localization results; its
 | [`DedekindIdealArithmetic.NumberField.MetricRescaling`](DedekindIdealArithmetic/NumberField/MetricRescaling.lean) | `NumberField.ArchimedeanNorms.rescale`, `NumberField.ArchimedeanNorms.rescale_apply`, `NumberField.ArchimedeanNorms.height_rescale`, `NumberField.ArchimedeanNorms.normalizedLogHeight_rescale` | Positive placewise factors multiply whole-fibre norms, divide height by their weighted product and subtract their degree-normalized weighted logarithmic sum |
 | [`DedekindIdealArithmetic.NumberField.MetricTransport`](DedekindIdealArithmetic/NumberField/MetricTransport.lean) | `NumberField.ArchimedeanNorms.comap`, `NumberField.ArchimedeanNorms.comap_apply`, `NumberField.ArchimedeanNorms.height_comap`, `NumberField.ArchimedeanNorms.normalizedLogHeight_comap` | Contravariant metric pullback along integral module equivalences; both heights are preserved for invertible modules |
 | [`DedekindIdealArithmetic.NumberField.Completion.Extension`](DedekindIdealArithmetic/NumberField/Completion/Extension.lean) | `NumberField.InfinitePlace.Completion.completionMap_algebraMap`, `NumberField.InfinitePlace.Completion.norm_completionMap`, `NumberField.InfinitePlace.Completion.isometry_completionMap` | For field algebras and infinite places with `w.LiesOver v`, Mathlib's completion map extends the field map isometrically; the identity field map gives the identity |
+| [`DedekindIdealArithmetic.NumberField.RationalFibre`](DedekindIdealArithmetic/NumberField/RationalFibre.lean) | `NumberField.InfinitePlace.rationalFibre_injective`, `NumberField.ArchimedeanNorms.rationalEval`, `NumberField.ArchimedeanNorms.rationalEval_eq_zero_iff`, `NumberField.ArchimedeanNorms.unit_rationalEval` | Injective specialization of the rational fibre without integral-module flatness, placewise evaluation of explicit metric data, and the whole rational unit-fibre model |
+| [`DedekindIdealArithmetic.NumberField.InfinitePlaceProducts`](DedekindIdealArithmetic/NumberField/InfinitePlaceProducts.lean) | `NumberField.InfinitePlace.prod_comap_pow_mult`, `NumberField.InfinitePlace.sum_mult_nsmul_comap` | Restriction of infinite places raises multiplicity-weighted products to the relative degree, and scales weighted sums by that degree, for arbitrary commutative monoids or additive commutative monoids |
 
 The norm-order results assume a commutative infinite Dedekind domain with
 `Ring.HasFiniteQuotients`. They do **not** assume a finite-free presentation over
@@ -135,10 +138,15 @@ Here `cP = P.rescale c` and `e*Q = Q.comap e`; the latter specifies the
 isometry condition, not invariance under an arbitrary change of metric.
 Multiplicative height is positive but need not be at least one.
 
-Auxiliary modules construct coefficient ideals in supplied rational frames,
-scalar extensions of seminorms on lines, and isometric completion maps. Their
-characteristic and unit formulas are not rational-height or finite-extension
-height evaluations. Rational finite-place/local-frame evaluation, independence
+Auxiliary modules realize finite torsion-free modules in supplied rational
+frames as coefficient lattices, evaluate the explicit metrics on rational
+fibres, extend seminorms on lines, and compare completions isometrically.
+Multiplicity-weighted products over restricted infinite places satisfy the
+relative extension-degree formula. Fractional-ideal absolute norms obey the
+relative-rank extension formula for torsion-free extensions of Dedekind domains
+finite free over the integers. These interfaces and their whole-unit models are
+not rational-height or finite-extension height evaluations. Rational
+finite-place/local-frame evaluation, independence
 of that evaluation from local frames, and finite-extension height transport
 remain open. The fixed-field integral construction and metric laws do not
 supply the full normed-module height theory.
