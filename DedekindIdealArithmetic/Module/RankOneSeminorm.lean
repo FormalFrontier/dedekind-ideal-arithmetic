@@ -5,7 +5,7 @@ Authors: Formal Frontier Agents
 module
 
 public import Mathlib.Analysis.Normed.Module.Seminorm.Norm
-public import Mathlib.LinearAlgebra.TensorProduct.Tower
+public import DedekindIdealArithmetic.Module.TensorCoordinates
 public import Mathlib.RingTheory.PicardGroup
 import Mathlib.Tactic.Ring
 
@@ -44,23 +44,14 @@ private noncomputable def rankOneCoordinate [Module.Invertible k V] : V ≃ₗ[k
 
 variable (l : Type v) [Field l] [Algebra k l]
 
-private def scalarExtensionCoordinate (e : V ≃ₗ[k] k) : l ⊗[k] V ≃ₗ[l] l :=
-  TensorProduct.AlgebraTensorModule.congr (LinearEquiv.refl l l) e ≪≫ₗ
-    TensorProduct.AlgebraTensorModule.rid k l l
-
-@[simp]
-private theorem scalarExtensionCoordinate_tmul (e : V ≃ₗ[k] k) (a : l) (x : V) :
-    scalarExtensionCoordinate l e (a ⊗ₜ[k] x) = e x • a := by
-  simp [scalarExtensionCoordinate]
-
 private theorem eq_coordinate_smul (e : V ≃ₗ[k] k) (x : V) :
     x = e x • e.symm 1 := by
   apply e.injective
   simp
 
 private theorem eq_coordinate_tmul (e : V ≃ₗ[k] k) (z : l ⊗[k] V) :
-    z = scalarExtensionCoordinate l e z ⊗ₜ[k] e.symm 1 := by
-  apply (scalarExtensionCoordinate l e).injective
+    z = e.scalarExtensionCoordinate l z ⊗ₜ[k] e.symm 1 := by
+  apply (e.scalarExtensionCoordinate l).injective
   simp
 
 end Coordinates
@@ -82,9 +73,7 @@ noncomputable def extendScalarsRankOne (p : Seminorm k V) : Seminorm l (l ⊗[k]
   let e : V ≃ₗ[k] k :=
     (Module.Invertible.free_iff_linearEquiv.mp (inferInstance : Module.Free k V)).some
   let c : ℝ≥0 := ⟨p (e.symm 1), apply_nonneg p _⟩
-  c • (normSeminorm l l).comp
-      (TensorProduct.AlgebraTensorModule.congr (LinearEquiv.refl l l) e ≪≫ₗ
-        TensorProduct.AlgebraTensorModule.rid k l l).toLinearMap
+  c • (normSeminorm l l).comp (e.scalarExtensionCoordinate l).toLinearMap
 
 /-- The extended seminorm is multiplicative on pure tensors, including when the
 original seminorm is degenerate. -/
@@ -92,8 +81,8 @@ original seminorm is degenerate. -/
 theorem extendScalarsRankOne_apply_tmul (p : Seminorm k V) (a : l) (x : V) :
     p.extendScalarsRankOne l (a ⊗ₜ[k] x) = ‖a‖ * p x := by
   let e : V ≃ₗ[k] k := rankOneCoordinate
-  change p (e.symm 1) * ‖scalarExtensionCoordinate l e (a ⊗ₜ[k] x)‖ = ‖a‖ * p x
-  rw [scalarExtensionCoordinate_tmul, norm_smul, apply_eq_coordinate p e x]
+  change p (e.symm 1) * ‖e.scalarExtensionCoordinate l (a ⊗ₜ[k] x)‖ = ‖a‖ * p x
+  rw [LinearEquiv.scalarExtensionCoordinate_tmul, norm_smul, apply_eq_coordinate p e x]
   ring
 
 /-- Restriction along the canonical map into the scalar extension recovers the
@@ -111,9 +100,9 @@ theorem extendScalarsRankOne_apply (p : Seminorm k V) (e : V ≃ₗ[k] k)
         TensorProduct.AlgebraTensorModule.rid k l l) z‖ := by
   calc
     p.extendScalarsRankOne l z = p.extendScalarsRankOne l
-        (scalarExtensionCoordinate l e z ⊗ₜ[k] e.symm 1) :=
+        (e.scalarExtensionCoordinate l z ⊗ₜ[k] e.symm 1) :=
       congrArg (p.extendScalarsRankOne l) (eq_coordinate_tmul l e z)
-    _ = ‖scalarExtensionCoordinate l e z‖ * p (e.symm 1) :=
+    _ = ‖e.scalarExtensionCoordinate l z‖ * p (e.symm 1) :=
       extendScalarsRankOne_apply_tmul l p _ _
     _ = _ := mul_comm _ _
 
@@ -126,11 +115,11 @@ theorem extendScalarsRankOne_unique (p : Seminorm k V) (q : Seminorm l (l ⊗[k]
   apply Seminorm.ext
   intro z
   calc
-    q z = q (scalarExtensionCoordinate l e z ⊗ₜ[k] e.symm 1) :=
+    q z = q (e.scalarExtensionCoordinate l z ⊗ₜ[k] e.symm 1) :=
       congrArg q (eq_coordinate_tmul l e z)
-    _ = ‖scalarExtensionCoordinate l e z‖ * p (e.symm 1) := h _ _
+    _ = ‖e.scalarExtensionCoordinate l z‖ * p (e.symm 1) := h _ _
     _ = p.extendScalarsRankOne l
-        (scalarExtensionCoordinate l e z ⊗ₜ[k] e.symm 1) :=
+        (e.scalarExtensionCoordinate l z ⊗ₜ[k] e.symm 1) :=
       (extendScalarsRankOne_apply_tmul l p _ _).symm
     _ = p.extendScalarsRankOne l z :=
       congrArg (p.extendScalarsRankOne l) (eq_coordinate_tmul l e z).symm
@@ -147,11 +136,11 @@ theorem extendScalarsRankOne_eq_zero_iff (p : Seminorm k V)
       have h' := congrArg e h
       simp at h'
     have hp_unit : p (e.symm 1) ≠ 0 := fun h ↦ he (hp _ h)
-    have hprod : p (e.symm 1) * ‖scalarExtensionCoordinate l e z‖ = 0 :=
+    have hprod : p (e.symm 1) * ‖e.scalarExtensionCoordinate l z‖ = 0 :=
       (extendScalarsRankOne_apply l p e z).symm.trans hz
-    have hcoord : scalarExtensionCoordinate l e z = 0 :=
+    have hcoord : e.scalarExtensionCoordinate l z = 0 :=
       norm_eq_zero.mp ((mul_eq_zero.mp hprod).resolve_left hp_unit)
-    apply (scalarExtensionCoordinate l e).injective
+    apply (e.scalarExtensionCoordinate l).injective
     simpa only [map_zero] using hcoord
   · rintro rfl
     exact map_zero _

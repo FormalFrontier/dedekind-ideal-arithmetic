@@ -6,6 +6,7 @@ module
 
 public import DedekindIdealArithmetic.ClassGroup.Localization
 public import DedekindIdealArithmetic.Ideal.AbsNorm
+public import DedekindIdealArithmetic.Ideal.AdicNorm
 public import DedekindIdealArithmetic.Ideal.FractionalNorm
 public import DedekindIdealArithmetic.Ideal.PrincipalPrime
 public import DedekindIdealArithmetic.Module.CoefficientIdeal

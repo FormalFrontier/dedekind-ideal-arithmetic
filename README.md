@@ -63,6 +63,13 @@ interfaces; this library does not redefine them.
   coefficient-ideal exponents, divided by the weighted archimedean norm product. See
   [fractional norms](DedekindIdealArithmetic/Ideal/FractionalNorm.lean) and
   [finite-place height factors](DedekindIdealArithmetic/NumberField/FinitePlaceHeight.lean).
+- **Principal exponents determine scalar completion norms.** For any Dedekind
+  domain and fraction field, a nonzero scalar has adic valuation equal to the
+  exponential of its negative principal fractional-ideal count. With an infinite
+  base ring and finite quotients, its norm in the adic completion is the residue
+  cardinality raised to that negative count. No finite-free presentation over
+  the integers or norm on the fraction field is required. See
+  [adic norms](DedekindIdealArithmetic/Ideal/AdicNorm.lean).
 
 ## Mathematical scope
 
@@ -74,11 +81,13 @@ covers the six ideal-norm, principal-prime and localization results; its
 | Module | Public declarations | Meaning |
 | --- | --- | --- |
 | [`DedekindIdealArithmetic.Ideal.AbsNorm`](DedekindIdealArithmetic/Ideal/AbsNorm.lean) | `Ideal.absNorm_lt_absNorm_of_lt`, `Ideal.eq_of_le_of_absNorm_eq` | Strict ideal inclusion reverses absolute norm when the smaller ideal is nonzero; nested equal-norm ideals are equal, including the zero-ideal case |
+| [`DedekindIdealArithmetic.Ideal.AdicNorm`](DedekindIdealArithmetic/Ideal/AdicNorm.lean) | `IsDedekindDomain.HeightOneSpectrum.valuation_eq_exp_neg_count_spanSingleton`, `IsDedekindDomain.HeightOneSpectrum.norm_algebraMap_eq_zpow_neg_count_spanSingleton`, `NumberField.FinitePlace.norm_algebraMap` | Principal fractional-ideal counts determine adic valuations and selected completion norms; the principal weight cancels the norm of its nonzero generator |
 | [`DedekindIdealArithmetic.Ideal.FractionalNorm`](DedekindIdealArithmetic/Ideal/FractionalNorm.lean) | `FractionalIdeal.absNorm_eq_finprod_count`, `FractionalIdeal.absNorm_spanSingleton_eq_cardQuot_mul`, `FractionalIdeal.absNorm_extendedHom` | Nonzero fractional-ideal norms factor as finite-support products of prime norms with signed exponents; principal norms equal span index times ideal norm, including zero ideals/elements; extension raises norm to the relative rank |
 | [`DedekindIdealArithmetic.Ideal.PrincipalPrime`](DedekindIdealArithmetic/Ideal/PrincipalPrime.lean) | `Ideal.exists_principal_prime_over_of_norm_natAbs_eq` | An element with prime absolute algebraic norm generates a principal prime above that rational prime |
 | [`DedekindIdealArithmetic.ClassGroup.Localization`](DedekindIdealArithmetic/ClassGroup/Localization.lean) | `ClassGroup.extendedHom_surjective_of_isLocalization`, `ClassGroup.isPrincipalIdealRing_of_generator_of_isLocalization`, `ClassGroup.uniqueFactorizationMonoid_of_generator_of_isLocalization` | Class-group extension to a Dedekind localization is onto; killing a generator of the source class group gives a PID and hence a UFD |
 | [`DedekindIdealArithmetic.Module.Index`](DedekindIdealArithmetic/Module/Index.lean) | `Submodule.cardQuot_map_of_injective`, `Submodule.cardQuot_span_singleton_smul`, `Module.Invertible.finite_quotient_span_singleton`, `Module.Invertible.exists_nonzero_smul_eq`, `Module.Invertible.cardQuot_span_singleton_tmul` | Quotient-index laws, finite section quotients and common scalar multiples; pure-tensor section indices multiply for invertible modules over a Dedekind domain with finite quotients |
-| [`DedekindIdealArithmetic.Module.CoefficientIdeal`](DedekindIdealArithmetic/Module/CoefficientIdeal.lean) | `LinearEquiv.coefficientMap_injective`, `LinearEquiv.coefficientIdeal`, `LinearEquiv.mem_coefficientIdeal_iff`, `LinearEquiv.coefficientIdeal_ne_zero`, `LinearEquiv.coefficientIdeal_rid`, `LinearEquiv.coefficientMap_eq_smul`, `LinearEquiv.coefficientIdeal_eq_spanSingleton_mul` | A rational frame realizes a finite torsion-free module as its nonzero coefficient fractional ideal; changing frames multiplies the map and ideal by the corresponding nonzero scalar and principal ideal |
+| [`DedekindIdealArithmetic.Module.TensorCoordinates`](DedekindIdealArithmetic/Module/TensorCoordinates.lean) | `LinearEquiv.scalarExtensionCoordinate`, `LinearEquiv.scalarExtensionCoordinate_tmul`, `LinearEquiv.scalarExtensionCoordinate_symm_apply` | Extend a supplied linear coordinate through a semiring algebra by base change and the tensor unit equivalence |
+| [`DedekindIdealArithmetic.Module.CoefficientIdeal`](DedekindIdealArithmetic/Module/CoefficientIdeal.lean) | `LinearEquiv.coefficientMap_injective`, `LinearEquiv.coefficientIdeal`, `LinearEquiv.mem_coefficientIdeal_iff`, `LinearEquiv.coefficientIdeal_ne_zero`, `LinearEquiv.coefficientIdeal_rid`, `LinearEquiv.coefficientMap_eq_smul`, `LinearEquiv.coefficientIdeal_eq_spanSingleton_mul`, `LinearEquiv.fibreCoordinate`, `LinearEquiv.fibreCoordinate_change` | A supplied frame gives semiring-algebra fibre coordinates with pure-tensor, inverse, unit and frame-change laws; a rational frame realizes a finite torsion-free module as its nonzero coefficient fractional ideal; changing frames multiplies the map and ideal by the corresponding nonzero scalar and principal ideal |
 | [`DedekindIdealArithmetic.Module.CoefficientIdealNorm`](DedekindIdealArithmetic/Module/CoefficientIdealNorm.lean) | `LinearEquiv.cardQuot_span_singleton_mul_absNorm_coefficientIdeal` | Over a Dedekind domain finite free over the integers, every section's span index times the coefficient-ideal norm is the principal fractional norm of its coefficient, without integral freeness or invertibility |
 | [`DedekindIdealArithmetic.Module.RankOneSeminorm`](DedekindIdealArithmetic/Module/RankOneSeminorm.lean) | `Seminorm.extendScalarsRankOne`, `Seminorm.extendScalarsRankOne_apply_tmul`, `Seminorm.extendScalarsRankOne_unique`, `Seminorm.extendScalarsRankOne_normSeminorm` | For a normed field algebra and an invertible source vector space, uniquely extend a possibly degenerate seminorm by `pₗ(a ⊗ x) = ‖a‖ * p(x)`; definiteness is preserved and the unit line recovers the field norm |
 | [`DedekindIdealArithmetic.NumberField.ArchimedeanNorms`](DedekindIdealArithmetic/NumberField/ArchimedeanNorms.lean) | `NumberField.ArchimedeanNorms`, `ArchimedeanNorms.normProduct`, `ArchimedeanNorms.normProduct_smul`, `InfinitePlace.one_tmul_injective` (within `NumberField`) | Definite completion-fibre seminorms, their weighted product and scalar law, and injectivity of specialization for flat integral modules |
@@ -184,6 +193,12 @@ factorization requires `I ≠ 0`, which is automatic for a coefficient ideal.
 No section, integral basis or additional metric data are needed for this height
 evaluation. See the [rational-frame guide](docs/RationalFrameHeight.md) for the
 sign conventions, zero-ideal boundary and generic arithmetic identities.
+
+A supplied frame `e : K ⊗[R] M ≃ₗ[K] K` also gives an `F`-linear coordinate
+`e.fibreCoordinate F : F ⊗[R] M ≃ₗ[F] F` for compatible semiring algebras.
+It sends `a ⊗ m` to `a * algebraMap K F (e.coefficientMap m)` and the image
+of `e.symm 1` to one. This coordinate API assumes no module finiteness,
+torsion-freeness, invertibility, fraction-field structure or norms.
 
 Further modules extend seminorms on lines and compare completions isometrically.
 Multiplicity-weighted products over restricted infinite places satisfy the
