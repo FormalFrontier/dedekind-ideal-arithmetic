@@ -190,6 +190,40 @@ theorem fibreCoordinate_rid :
 
 end FibreCoordinate
 
+section FibreCoordinateTower
+
+variable (A : Type*) [CommSemiring A] [Algebra R A] [Algebra K A]
+  [IsScalarTower R K A]
+variable (F : Type z) [Semiring F] [Algebra R F] [Algebra K F] [Algebra A F]
+  [IsScalarTower R K F] [IsScalarTower R A F] [IsScalarTower K A F]
+
+/-- Extending a fibre coordinate through an intermediate algebra agrees with
+extending the rational frame directly, after cancelling the intermediate base change. -/
+theorem fibreCoordinate_scalarExtensionCoordinate :
+    (e.fibreCoordinate A).scalarExtensionCoordinate F =
+      TensorProduct.AlgebraTensorModule.cancelBaseChange R A F F M ≪≫ₗ
+        e.fibreCoordinate F := by
+  apply LinearEquiv.toLinearMap_injective
+  apply TensorProduct.AlgebraTensorModule.ext
+  intro a y
+  induction y using TensorProduct.inductionOn with
+  | tmul b m =>
+      simpa [Algebra.smul_def, ← IsScalarTower.algebraMap_apply K A F, mul_assoc]
+        using congrArg (fun z : F => algebraMap A F b * z)
+          (Algebra.commutes (e.coefficientMap m) a)
+  | add y z hy hz =>
+      simp only [TensorProduct.tmul_add, map_add, hy, hz]
+
+/-- Evaluation of a fibre coordinate extended through an intermediate algebra. -/
+@[simp]
+theorem fibreCoordinate_scalarExtensionCoordinate_apply (x : F ⊗[A] (A ⊗[R] M)) :
+    (e.fibreCoordinate A).scalarExtensionCoordinate F x =
+      e.fibreCoordinate F
+        (TensorProduct.AlgebraTensorModule.cancelBaseChange R A F F M x) := by
+  rw [fibreCoordinate_scalarExtensionCoordinate, trans_apply]
+
+end FibreCoordinateTower
+
 end CommutativeCoefficients
 
 section FractionField

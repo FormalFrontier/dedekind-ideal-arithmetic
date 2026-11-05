@@ -33,6 +33,44 @@ through the module instances. No integral trivialization or assumption
 `Module.Free (𝓞 K) M` is needed. The frame is supplied explicitly; the
 left-hand side has no frame argument and no second height is defined.
 
+## Intrinsic height and sections
+
+The intrinsic construction is in
+[`ModuleHeight.lean`](../DedekindIdealArithmetic/NumberField/ModuleHeight.lean).
+For **every** nonzero integral section `m`, write `m_v = 1 ⊗ m`. Then
+
+\[
+ H(P)=\frac{\#(M/\mathcal O_Km)}
+            {\prod_{v\mid\infty}P_v(m_v)^{\varepsilon_v}},\qquad
+ h(P)=\frac{\log H(P)}{[K:\mathbf Q]},\qquad
+ \varepsilon_v=\begin{cases}1&v\text{ real},\\2&v\text{ complex}.\end{cases}
+\]
+
+The numerator is `Submodule.cardQuot (Submodule.span (𝓞 K) {m})`, not
+prescribed index data. Finiteness of this quotient, positivity of the norm
+product and independence of the nonzero section are conclusions, not fields
+of the metric. Nonprincipal invertible modules are included. No norm instance
+on `M` or on a completion tensor fibre is required. The standard unit metric
+on `𝓞 K` has `H = 1` and `h = 0`.
+
+The generic index API in
+[`Index.lean`](../DedekindIdealArithmetic/Module/Index.lean) supports this
+construction. For an injective linear map `f : M →ₗ[R] N` and a submodule
+`S`, it gives
+
+\[
+ \#(N/f(S))=\#(M/S)\,\#(N/\operatorname{range}f).
+\]
+
+Neither quotient is assumed finite; infinite quotients have `cardQuot = 0`.
+Over a domain, scaling a nonzero section of a torsion-free module multiplies
+its quotient index by the principal left-ideal index, including zero scalars
+and infinite quotients. For an infinite Dedekind domain this scalar factor
+is the absolute norm of the scalar's principal ideal. Over a commutative
+domain with finite quotients, invertible modules have finite quotients by
+nonzero sections. Any two nonzero sections of an invertible module over a
+commutative domain admit a common nonzero scalar multiple.
+
 ## Meaning and normalization
 
 - `ArchimedeanNorms` gives definite seminorms on all vectors of the completion
@@ -198,10 +236,28 @@ For another frame `e'`, put \(z=e'(e^{-1}(1))\ne0\). The laws
 weighted archimedean product acquires its inverse. Every frame therefore gives
 the same right-hand side, also directly because it equals `P.height`.
 
-Positive metric rescaling is a different operation. `P.rescale c` leaves `I`
-unchanged and multiplies each rational evaluation by `((c v : ℝ≥0) : ℝ)`.
-The reciprocal formula divides height by
-\(\prod_v c_v^{\operatorname{mult}(v)}\), as in `height_rescale`.
+Positive metric rescaling is a different operation. `P.rescale c`, for
+`c : InfinitePlace K → ℝ≥0ˣ`, leaves `I` unchanged and multiplies each
+whole-fibre seminorm, hence each rational evaluation, by
+`((c v : ℝ≥0) : ℝ)`. For invertible integral modules with metrics `P, Q`
+and an integral module equivalence `f : M ≃ₗ[𝓞 K] N`, the metric laws are
+
+\[
+\begin{aligned}
+ H(P\otimes Q)&=H(P)H(Q), & h(P\otimes Q)&=h(P)+h(Q),\\
+ H(cP)&=\frac{H(P)}{\prod_v c_v^{\varepsilon_v}}, &
+ h(cP)&=h(P)-\frac{\sum_v\varepsilon_v\log c_v}{[K:\mathbf Q]},\\
+ H(f^*Q)&=H(Q), & h(f^*Q)&=h(Q).
+\end{aligned}
+\]
+
+The tensor metric multiplies norms on pure tensors of completion-fibre
+vectors. Here `cP = P.rescale c` and `f*Q = Q.comap f`; the latter specifies
+metric pullback, not invariance under an arbitrary change of metric.
+The corresponding APIs are in
+[`MetricTensorProduct.lean`](../DedekindIdealArithmetic/NumberField/MetricTensorProduct.lean),
+[`MetricRescaling.lean`](../DedekindIdealArithmetic/NumberField/MetricRescaling.lean)
+and [`MetricTransport.lean`](../DedekindIdealArithmetic/NumberField/MetricTransport.lean).
 
 For the standard unit metric on `𝓞 K` and the multiplication frame,
 `coefficientIdeal_rid` and `unit_rationalEval_one` make both factors one;
@@ -213,9 +269,21 @@ metrics illustrate both the reciprocal convention and genuine variation.
 ## Scope
 
 These are fixed-field evaluations of the intrinsic height, including an
-arithmetic finite-place exponent formula with finite support. They do not
-construct norms on finite-completion fibres, identify their unit balls, or
-provide tensor transport of finite local frames to those fibres. Nor do they
-give height transport through finite extensions. A dual-evaluation
+arithmetic finite-place exponent formula with finite support. The separate
+[adic-fibre guide](AdicFibres.md) describes canonical seminorms on
+finite-completion fibres and their algebraic integral spans. Neither account
+identifies those spans with seminorm unit balls or provides local tensor
+compatibility or height transport through finite extensions. These results
+do not supply the full normed-module height theory. A dual-evaluation
 interpretation via the inverse coefficient ideal is not required for the
 index proof and is not asserted here.
+
+The library does contain isometric completion maps over field extensions in
+[`Completion/Extension.lean`](../DedekindIdealArithmetic/NumberField/Completion/Extension.lean),
+multiplicity-weighted restriction laws for arbitrary commutative-monoid
+products and additive-commutative-monoid sums over infinite places in
+[`InfinitePlaceProducts.lean`](../DedekindIdealArithmetic/NumberField/InfinitePlaceProducts.lean),
+and the relative-rank fractional-ideal norm extension formula for
+torsion-free extensions of Dedekind domains finite free over `ℤ` in
+[`FractionalNorm.lean`](../DedekindIdealArithmetic/Ideal/FractionalNorm.lean).
+These scalar and arithmetic comparisons are distinct from height transport.
