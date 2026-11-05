@@ -11,11 +11,12 @@ project:
     principal-prime extraction and class-group localization sit alongside
     finite section quotients, common scalar multiples, integral-section
     heights and normalized logarithmic heights, with tensor-product, positive
-    metric-rescaling and equivalence-pullback formulas. Coefficient lattices,
-    placewise rational-fibre evaluation, relative-degree formulas for weighted
-    infinite-place products, extension laws for fractional-ideal absolute norms,
-    rank-one seminorm scalar extension and isometric completion maps are
-    auxiliary constructions.
+    metric-rescaling and equivalence-pullback formulas. Rational frames evaluate
+    the same intrinsic height through coefficient-ideal norms and weighted
+    archimedean products, using generic fractional-ideal index comparisons.
+    Relative-degree formulas for weighted infinite-place products, extension
+    laws for fractional-ideal norms, rank-one seminorm scalar extension and
+    isometric completion maps supply further interfaces.
   authors:
     - "Formal Frontier Agents"
   license: "Apache-2.0"
@@ -58,8 +59,9 @@ sources:
     note: >-
       Reference for height conventions on normed invertible modules, tensor
       products, positive metric rescaling and isometry invariance. The scope
-      here is fixed-field integral-section heights and their metric laws,
-      not the full rational, geometric or finite-extension height theory.
+      here is fixed-field intrinsic heights, integral-section and supplied
+      rational-frame evaluations, and their metric laws, not the full
+      finite-place, geometric or finite-extension height theory.
 
 related_formalizations:
   - id: "https://github.com/leanprover-community/mathlib4/tree/83abb3e776bdefcbc447a1e44d0debe4010039e5"
@@ -130,11 +132,12 @@ highlights:
       and add normalized logarithmic heights. Positive placewise rescaling
       divides height by the weighted product of the factors and subtracts their
       weighted logarithmic sum divided by [K:Q]. Pullback along an O_K-linear
-      equivalence of invertible modules preserves both heights. Auxiliary
-      coefficient lattices, rational-fibre norms, weighted infinite-place
-      products and fractional-ideal norm extension formulas support these
-      interfaces; they do not yet provide rational frame invariance or
-      finite-extension height transport.
+      equivalence of invertible modules preserves both heights. Every supplied
+      rational frame evaluates the same height as the reciprocal of its
+      coefficient-ideal norm times the weighted archimedean product at its
+      rational unit vector. Only logarithmic height is divided by [K:Q].
+      Explicit finite-place local norms and finite-extension height transport
+      are not provided.
     declarations:
       - declaration: "NumberField.ArchimedeanNorms.height_eq"
         file: "DedekindIdealArithmetic/NumberField/ModuleHeight.lean"
@@ -154,6 +157,10 @@ highlights:
         file: "DedekindIdealArithmetic/NumberField/MetricTransport.lean"
       - declaration: "NumberField.ArchimedeanNorms.normalizedLogHeight_comap"
         file: "DedekindIdealArithmetic/NumberField/MetricTransport.lean"
+      - declaration: "NumberField.ArchimedeanNorms.height_eq_rationalFrame"
+        file: "DedekindIdealArithmetic/NumberField/RationalFrameHeight.lean"
+      - declaration: "NumberField.ArchimedeanNorms.normalizedLogHeight_eq_rationalFrame"
+        file: "DedekindIdealArithmetic/NumberField/RationalFrameHeight.lean"
       - declaration: "LinearEquiv.coefficientMap_injective"
         file: "DedekindIdealArithmetic/Module/CoefficientIdeal.lean"
       - declaration: "NumberField.ArchimedeanNorms.rationalEval_eq_zero_iff"
@@ -165,17 +172,18 @@ highlights:
 
 status:
   scope: >-
-    Ideal arithmetic, generic quotient indices, integral-section heights and
-    their tensor, positive-rescaling and equivalence-pullback laws are described
-    below. Coefficient ideals in supplied rational frames, rational-fibre norms,
-    weighted infinite-place products, fractional-ideal norm extension formulas,
-    scalar extension of seminorms on lines and isometric completion maps are
-    auxiliary constructions, not rational-height or finite-extension-height
-    evaluations. Element-norm
-    witnesses, class-number computations, injectivity of class extension and
-    proofs of proposed class generators are not supplied. Rational finite-place
-    and local-frame height evaluation, independence of that evaluation from
-    local frames, and finite-extension height transport remain open.
+    Ideal arithmetic, generic quotient indices, intrinsic fixed-field heights
+    and their tensor, positive-rescaling and equivalence-pullback laws are
+    described below. Supplied rational frames evaluate height through their
+    coefficient-ideal norms and weighted rational-fibre norm products. Generic
+    fractional-ideal norm/index comparisons include zero ideals and sections.
+    Weighted infinite-place products, fractional-ideal norm extension formulas,
+    seminorm scalar extension and isometric completion maps supply further
+    interfaces, not finite-extension-height evaluations. Element-norm witnesses,
+    class-number computations, injectivity of class extension and proofs of
+    proposed class generators are not supplied. Explicit finite-place local
+    norms, finite support and local-frame height evaluations, and
+    finite-extension height transport remain open.
   main_results:
     - declaration: "Ideal.absNorm_lt_absNorm_of_lt"
       file: "DedekindIdealArithmetic/Ideal/AbsNorm.lean"
@@ -298,6 +306,45 @@ status:
         Under the same pullback hypotheses, normalized logarithmic height is
         preserved. Metric pullback itself needs neither module invertible
         and satisfies the identity and contravariant composition laws.
+    - declaration: "FractionalIdeal.absNorm_spanSingleton_eq_cardQuot_mul"
+      file: "DedekindIdealArithmetic/Ideal/FractionalNorm.lean"
+      note: >-
+        For a Dedekind domain finite free over the integers and a fraction
+        field, the principal fractional ideal generated by any element x of
+        a fractional ideal I has norm cardQuot (span {x}) times norm I.
+        Zero ideals and elements are included; infinite indices are zero.
+        No number-field structure on the fraction field is required.
+    - declaration: "LinearEquiv.cardQuot_span_singleton_mul_absNorm_coefficientIdeal"
+      file: "DedekindIdealArithmetic/Module/CoefficientIdealNorm.lean"
+      note: >-
+        A supplied rational frame for a finite torsion-free module over a
+        Dedekind domain finite free over the integers gives, for every section,
+        its span index times the coefficient-ideal norm equal to the principal
+        fractional norm of its coefficient. No invertibility or freeness over
+        the Dedekind domain is assumed.
+    - declaration: "NumberField.ArchimedeanNorms.normProduct_eq_rationalFrame"
+      file: "DedekindIdealArithmetic/NumberField/RationalFrameHeight.lean"
+      note: >-
+        In any supplied rational frame, the weighted norm product of every
+        integral section equals the absolute field norm of its coefficient
+        times the weighted rational norm product of the frame unit vector.
+        This needs no finiteness, torsion-freeness or invertibility of the
+        integral module and includes zero sections.
+    - declaration: "NumberField.ArchimedeanNorms.height_eq_rationalFrame"
+      file: "DedekindIdealArithmetic/NumberField/RationalFrameHeight.lean"
+      note: >-
+        For a number field and an invertible module over its ring of integers,
+        every supplied rational frame evaluates the existing intrinsic height
+        as the inverse of the coefficient-ideal norm times the weighted
+        archimedean norm product of its rational unit vector. No integral basis
+        or second height definition is introduced.
+    - declaration: "NumberField.ArchimedeanNorms.normalizedLogHeight_eq_rationalFrame"
+      file: "DedekindIdealArithmetic/NumberField/RationalFrameHeight.lean"
+      note: >-
+        Under the same height hypotheses, normalized logarithmic height is
+        minus the logarithm of the coefficient-ideal norm and the weighted
+        archimedean logarithmic sum, divided by [K:Q]. There is no degree root
+        in multiplicative height and no nonnegativity assertion.
     - declaration: "LinearEquiv.coefficientIdeal"
       file: "DedekindIdealArithmetic/Module/CoefficientIdeal.lean"
       note: >-
@@ -356,12 +403,14 @@ fidelity:
     not global integral bases, and satisfy the pure-tensor norm formula.
     Positive rescaling uses ordinary unsquared norms and divides height by
     the weighted factor; equivalence pullback states the precise isometry
-    condition. These laws concern fixed-field integral heights. Coefficient
-    ideals depend on supplied rational frames; seminorm scalar extensions
-    and isometric completion maps have characteristic and unit formulas but
-    do not evaluate rational or finite-extension heights. Rational finite-place
-    and local-frame height evaluation, independence of that evaluation from
-    local frames, and finite-extension height transport remain open.
+    condition. These laws concern fixed-field intrinsic heights. Coefficient
+    ideals depend on supplied rational frames, while their norms combined with
+    the weighted rational unit-vector norm product evaluate the same intrinsic
+    height in every frame. Only normalized logarithmic height is divided by
+    the degree. Seminorm scalar extensions and isometric completion maps
+    supply further interfaces, not finite-extension height formulas. Explicit
+    finite-place local norms, finite support and local-frame height evaluations,
+    and finite-extension height transport remain open.
 
 review:
   status: "agent-reviewed"

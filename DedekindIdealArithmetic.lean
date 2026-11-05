@@ -9,6 +9,7 @@ public import DedekindIdealArithmetic.Ideal.AbsNorm
 public import DedekindIdealArithmetic.Ideal.FractionalNorm
 public import DedekindIdealArithmetic.Ideal.PrincipalPrime
 public import DedekindIdealArithmetic.Module.CoefficientIdeal
+public import DedekindIdealArithmetic.Module.CoefficientIdealNorm
 public import DedekindIdealArithmetic.Module.RankOneSeminorm
 public import DedekindIdealArithmetic.NumberField.Completion.Extension
 public import DedekindIdealArithmetic.NumberField.InfinitePlaceProducts
@@ -17,6 +18,7 @@ public import DedekindIdealArithmetic.NumberField.MetricTensorProduct
 public import DedekindIdealArithmetic.NumberField.MetricTransport
 public import DedekindIdealArithmetic.NumberField.ModuleHeight
 public import DedekindIdealArithmetic.NumberField.RationalFibre
+public import DedekindIdealArithmetic.NumberField.RationalFrameHeight
 
 /-!
 # Dedekind ideal arithmetic
@@ -35,7 +37,10 @@ restricted infinite places satisfy the relative extension-degree formula.
 Fractional-ideal absolute norms satisfy the relative-rank extension formula
 for torsion-free extensions of Dedekind domains finite free over the integers.
 
-The rational-fibre and coefficient-ideal interfaces do not assert a
-frame-independent rational height or a finite-extension height law. The
+A rational frame evaluates the intrinsic height through the absolute norm of
+its coefficient ideal and the weighted archimedean product of its unit vector.
+The index comparison holds also for zero sections; the height formula concerns
+invertible modules and does not assume an integral basis. Explicit finite-place
+local norms and finite-extension height transport are not provided. The
 individual modules document the hypotheses and interfaces.
 -/

@@ -26,13 +26,13 @@ of the section are conclusions, not fields of the norm data.
 
 ## Limitations
 
-This module concerns integral sections over a fixed number field. The companion
-modules `MetricTensorProduct`, `MetricRescaling` and `MetricTransport` supply
-tensor metrics, positive placewise rescaling and pullback along module
-equivalences, together with their height formulas. Rational finite-place and
-local-frame evaluation, independence of that evaluation from local frames, and
-compatible archimedean metrics and height transport through finite extensions
-are not provided here.
+This module defines height through integral sections over a fixed number field.
+The companion modules `MetricTensorProduct`, `MetricRescaling` and
+`MetricTransport` supply tensor metrics, positive placewise rescaling and
+pullback along module equivalences, together with their height formulas.
+`RationalFrameHeight` evaluates this same height in a supplied rational frame.
+Explicit finite-place local norms and compatible archimedean metrics and height
+transport through finite extensions are not provided here.
 
 ## References
 
